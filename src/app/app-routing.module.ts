@@ -5,7 +5,8 @@ import { DefinicionParametrosComponent } from './components/definicion-parametro
 
 const routes: Routes = [
   { path: '', redirectTo: '/criterios', pathMatch: 'full'},
-  { path: 'criterios', component: DefinicionParametrosComponent }
+  { path: 'criterios', component: DefinicionParametrosComponent },
+  { path: 'documentos', component: DocumentosComponent }
 ];
 
 @NgModule({

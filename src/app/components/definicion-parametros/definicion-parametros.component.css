@@ -2,3 +2,16 @@
     display: inline-block;
     margin-right: 4%;
 }
+
+#first-group{
+    margin-bottom: 2%;
+}
+
+.label-f{
+    margin-bottom: 4%;
+}
+
+#input-valor{
+    padding-left: 2%;
+    width: 58%;
+}

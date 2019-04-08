@@ -3,7 +3,6 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Documento } from '../../POJOs/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { MatTable, MatSort } from '@angular/material'
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Consulta } from 'src/app/POJOs/Consulta';
 
 @Component({
@@ -47,7 +46,8 @@ export class DocumentosComponent implements OnInit {
         this.table.renderRows();
       });
   }
-
+  
+  //Eventos
   obtenerValorPropiedad(doc:Documento, prop:string){
     let valorEncontrado = "...";
     let i = 0;
