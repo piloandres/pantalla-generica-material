@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Documento } from '../../POJOs/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { MatTable, MatSort } from '@angular/material'
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Consulta } from 'src/app/POJOs/Consulta';
 
 @Component({
   selector: 'app-documentos',
@@ -14,9 +16,10 @@ export class DocumentosComponent implements OnInit {
   constructor(
     private documentoService: DocumentoService
   ) { }
-
-  columnas: string[] = ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
-  "IsReserved"];
+  @Input() consulta: Consulta;
+  isLoading: boolean = true;
+  columnas: string[] ;/*= ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
+  "IsReserved"];*/
   documentos: Documento[];
   dataSource = new MatTableDataSource<Documento>(this.documentos);
 
@@ -25,15 +28,18 @@ export class DocumentosComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
 
   ngOnInit() {
+    this.columnas = this.consulta.parametros;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.obtenerDocumentos();
   }
 
   obtenerDocumentos(){
-    this.documentoService.obtenerDocumentos()
+    this.isLoading = true;
+    this.documentoService.obtenerDocumentos(this.consulta.queryUrl)
     .subscribe( documentoDTO => 
       {
+        this.isLoading = false;
         this.documentos = documentoDTO.documento;
         this.dataSource = new MatTableDataSource<Documento>(this.documentos);
         this.dataSource.paginator = this.paginator;

@@ -1,0 +1,38 @@
+
+
+<mat-select placeholder="Seleccione la clase" [(value)]="selectedCampo">
+  <mat-option *ngFor="let campo of camposSelector" value={{campo}}>
+    {{campo}}
+  </mat-option>
+</mat-select>
+
+<div *ngIf="selectedCampo">
+
+  <div *ngFor="let prop of propiedadesSeleccionadas">
+    <mat-form-field class="param-line">
+      <mat-select placeholder="seleccione propiedad.." [(value)]="prop.propiedad">
+        <mat-option *ngFor="let propCampo of propiedadesCampo" value={{propCampo}}>
+          {{propCampo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field class="param-line">
+      <mat-select placeholder="seleccione condicion.." [(value)]="prop.condicion">
+        <mat-option value="igual">
+          igual
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="param-line">
+      <input matInput placeholder="Digite el valor" [(value)]="prop.valor" />
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="buscar()" >Buscar</button>
+  
+</div>
+<div *ngIf="consulta">
+  <app-documentos [consulta]="consulta"></app-documentos>
+</div>

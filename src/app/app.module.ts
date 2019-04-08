@@ -11,11 +11,20 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
+import { DefinicionParametrosComponent } from './components/definicion-parametros/definicion-parametros.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    DocumentosComponent
+    DocumentosComponent,
+    DefinicionParametrosComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +33,11 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
     HttpClientModule
   ],
   providers: [],

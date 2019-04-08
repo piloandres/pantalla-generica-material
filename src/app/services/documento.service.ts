@@ -17,13 +17,13 @@ export class DocumentoService {
   private valoresConfiguracion = ValoresConfiguracion;
 
   //TODO: Manejo de log
-  obtenerDocumentos(): Observable<DocumentoGlobal>{
+  obtenerDocumentos(queryTxt: string): Observable<DocumentoGlobal>{
     //TODO: Esta función debe modificarse para que haga la consulta con varios criterios
     //Por ahora se pone la query, hasta no saber el formato
     let urlQuery = (this.valoresConfiguracion.uriDocumentos 
-      + "?clave=Id&valor={A0403569-0000-C319-8E2F-E9C04B90646A}");
+      + queryTxt);
 
-      urlQuery = "http://10.1.3.68:9081/SBServiciosFilenetREST/rest/servicios-documentales/documentos?clave=NombreUsuario&valor=IBMpruebas";
+      //urlQuery = "http://10.1.3.68:9081/SBServiciosFilenetREST/rest/servicios-documentales/documentos?clave=NombreUsuario&valor=IBMpruebas";
     
     const httpOptions = {
       headers: new HttpHeaders({
