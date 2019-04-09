@@ -23,8 +23,11 @@ export class DefinicionParametrosComponent implements OnInit {
   consulta: Consulta;
   selectedCampo: string;
   propiedadesCampo: Definicion[] = [];
+  esFecha: boolean = true;
+  fechaTemp: Date = new Date;
 
   propiedadNueva: PropiedadSelected = new PropiedadSelected;
+  
   propiedadesSeleccionadas: PropiedadSelected[] = [];
 
   camposSelector: string[] = [
@@ -38,12 +41,33 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   //Eventos
+  //Aqui falta lo de la condicion logica, y tener en cuenta mandar
+  //nombres visuales y simbolicos, solo se mandan simbolicos
   buscar(){
-    this.consulta = new Consulta(
+    /*this.consulta = new Consulta(
       ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
   "IsReserved"],
   "?clave=NombreUsuario&valor=IBMpruebas"
-    )
+    )*/
+    let nuevasColumnas = this.propiedadesCampo.map( p => p.nombreSimbolico).slice(0,5);
+    let nuevaQuery = "?";
+
+    for(let i=0; i< this.propiedadesSeleccionadas.length; i++){
+      if(i > 0 && i < this.propiedadesSeleccionadas.length-1){
+        nuevaQuery += '&operador=' + 'AND'+ "&";
+      }
+      nuevaQuery += 'clave='+this.propiedadesSeleccionadas[i].propiedad + 
+      '&'+'valor='+this.propiedadesSeleccionadas[i].valor;
+    }
+    this.consulta = null;
+    this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
+  }
+
+  agregarPropiedad(){
+    console.log(this.propiedadNueva);
+    this.propiedadesSeleccionadas.push(this.propiedadNueva);
+    this.propiedadNueva = new PropiedadSelected;
+    this.propiedadNueva.valor = "";
   }
 
   actualizarParametros(){
@@ -104,5 +128,6 @@ export class PropiedadSelected {
     public propiedad: string;
     public condicion: string;
     public valor: string;
-    
+    public valorDate: Date;
+    public tipo: string;
 }

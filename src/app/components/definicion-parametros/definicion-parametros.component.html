@@ -31,7 +31,7 @@
         </mat-form-field>-->
 
         <mat-form-field class="param-line input-valor" >
-          <input matInput placeholder="valor" [(value)]="prop.valor" />
+          <input matInput [(value)]="prop.valor" />
         </mat-form-field>
       </div>
       <!-- campo propiedad nueva -->
@@ -44,10 +44,14 @@
       </mat-form-field>
       
       <mat-form-field class="param-line input-valor" >
-        <input matInput placeholder="valor" [(value)]="propiedadNueva.valor" />
+        <input matInput [type]="esFecha ? 'date' : 'text'" placeholder="valor" [(ngModel)]="esFecha ? fechaTemp : propiedadNueva.valor" />
       </mat-form-field>
 
-      <button mat-raised-button color="primary" (click)="buscar()" >Buscar</button>
+      <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>
+
+      <div *ngIf="propiedadesSeleccionadas.length > 0">
+        <button mat-raised-button color="primary" (click)="buscar()" >Buscar</button>
+      </div>
     </mat-card>
   </div>
 </div>

@@ -1,25 +1,35 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Documento } from '../../POJOs/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { MatTable, MatSort } from '@angular/material'
 import { Consulta } from 'src/app/POJOs/Consulta';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-documentos',
   templateUrl: './documentos.component.html',
   styleUrls: ['./documentos.component.css']
 })
-export class DocumentosComponent implements OnInit {
-
+export class DocumentosComponent implements OnInit, OnChanges {
+//Hay un bug con los botones de ordenar
   constructor(
-    private documentoService: DocumentoService
-  ) { }
+    private documentoService: DocumentoService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) { 
+    iconRegistry.addSvgIcon(
+      'fileIcon',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/file-icon.svg')
+    );
+  }
   @Input() consulta: Consulta;
   isLoading: boolean = true;
   columnas: string[] ;/*= ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
   "IsReserved"];*/
   documentos: Documento[];
+  columnasAMostrar: string[];
   dataSource = new MatTableDataSource<Documento>(this.documentos);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,6 +38,19 @@ export class DocumentosComponent implements OnInit {
 
   ngOnInit() {
     this.columnas = this.consulta.parametros;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.obtenerDocumentos();
+    
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    this.documentos = [];
+    this.dataSource = new MatTableDataSource<Documento>(this.documentos);
+    this.columnas = this.consulta.parametros;
+    let columnasDeseadas = this.columnas.slice();
+    columnasDeseadas.push('ver');
+    this.columnasAMostrar = columnasDeseadas;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.obtenerDocumentos();
@@ -46,7 +69,7 @@ export class DocumentosComponent implements OnInit {
         this.table.renderRows();
       });
   }
-  
+
   //Eventos
   obtenerValorPropiedad(doc:Documento, prop:string){
     let valorEncontrado = "...";
@@ -63,6 +86,10 @@ export class DocumentosComponent implements OnInit {
       valorEncontrado = "...";
     }
     return valorEncontrado;
+  }
+
+  mostrarArchivo(laFila:Documento){
+    console.log(laFila);
   }
 
 }

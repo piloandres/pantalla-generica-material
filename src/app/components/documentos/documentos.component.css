@@ -8,3 +8,15 @@
     
     padding: 5%;
 }
+
+.con-tabla {
+    overflow: auto;
+}
+
+.mat-cell {
+    padding-right: 2%;
+}
+
+.mat-header-cell {
+    padding-right: 2%;
+}

@@ -1,6 +1,6 @@
 .param-line {
     display: inline-block;
-    margin-right: 4%;
+    margin-right: 2%;
 }
 
 #first-group{
@@ -12,6 +12,7 @@
 }
 
 .input-valor{
-    padding-left: 2%;
-    width: 58%;
+    padding-left: 1%;
+    width: 42%;
 }
+
