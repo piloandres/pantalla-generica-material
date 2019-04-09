@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Consulta } from 'src/app/POJOs/Consulta';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { PropiedadService } from 'src/app/services/propiedad.service';
+import { Definicion } from 'src/app/POJOs/Definicion';
+import { Propiedad } from 'src/app/POJOs/Propiedad';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -10,29 +15,29 @@ import { ActivatedRoute } from '@angular/router';
 export class DefinicionParametrosComponent implements OnInit {
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private propiedadService: PropiedadService
   ) { }
   
   esUrl: boolean;
   consulta: Consulta;
   selectedCampo: string;
-  propiedadesCampo: string[] = ["id","nombre", "tipo"];
-  propiedadesSeleccionadas: PropiedadSelected[] = [
-    new PropiedadSelected("id","igual","{123213}"),
-    new PropiedadSelected("nombre","igual","{123213}"),
-    new PropiedadSelected("tipo","igual","{123213}")
-  ];
+  propiedadesCampo: Definicion[] = [];
+
+  propiedadNueva: PropiedadSelected = new PropiedadSelected;
+  propiedadesSeleccionadas: PropiedadSelected[] = [];
 
   camposSelector: string[] = [
     "CD_DocumentoConocimientoCliente",
-    "CD_DocumentoConocimientoCliente",
-    "CD_DocumentoConocimientoCliente"
+    "CD_Poliza"
   ]
 
   ngOnInit() {
+    this.propiedadNueva.valor ="";
     this.obtenerInputs();
   }
 
+  //Eventos
   buscar(){
     this.consulta = new Consulta(
       ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
@@ -41,8 +46,21 @@ export class DefinicionParametrosComponent implements OnInit {
     )
   }
 
+  actualizarParametros(){
+    this.propiedadService.obtenerParametrosPorClase(this.selectedCampo)
+    .subscribe( p => 
+      {
+        this.propiedadesSeleccionadas = [];
+        this.propiedadesCampo = p;
+        this.propiedadNueva.valor ="";
+      }
+      );
+  }
+
   //Private
+  //TODO: Faltan validaciones y delegarlo a un service
   obtenerInputs(){
+
     if(!this.route.snapshot.queryParamMap.has('columnas')
       || !this.route.snapshot.queryParamMap.has('criterios')
       || !this.route.snapshot.queryParamMap.has('operadores'))
@@ -51,18 +69,14 @@ export class DefinicionParametrosComponent implements OnInit {
         return;
       }
     let columnasInputStr = this.route.snapshot.queryParamMap.get('columnas');
-    //console.log(columnasInputStr);
     let criteriosInputStr = this.route.snapshot.queryParamMap.get('criterios');
-    //console.log(criteriosInputStr);
     let operadoresInputStr = this.route.snapshot.queryParamMap.get('operadores');
 
     
     let columnasArray = columnasInputStr.split(",");
     //Validar input
-    //this.consulta.parametros = columnasArray;
     //Ahora los criterios, falta validar
     let criteriosArray = criteriosInputStr.split(",");
-
     let operadoresArray = operadoresInputStr.split(',');
     
     let nuevaQuery = "?";
@@ -77,8 +91,8 @@ export class DefinicionParametrosComponent implements OnInit {
       nuevaQuery += 'clave='+llave+'&'+'valor='+valor;
 
     }
+
     this.esUrl = true;
-    //console.log(nuevaQuery);
     this.consulta = new Consulta(columnasArray, nuevaQuery);
 
   }
@@ -86,9 +100,9 @@ export class DefinicionParametrosComponent implements OnInit {
 }
 
 export class PropiedadSelected {
-  constructor(
-    public propiedad: string,
-    public condicion: string,
-    public valor: string
-    ){}
+  
+    public propiedad: string;
+    public condicion: string;
+    public valor: string;
+    
 }

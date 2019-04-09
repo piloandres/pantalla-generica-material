@@ -3,7 +3,8 @@
     <div class="label-f">
       <label>Clases:</label>
     </div>
-    <mat-select placeholder="Seleccione la clase" [(value)]="selectedCampo">
+    <mat-select placeholder="Seleccione la clase" [(value)]="selectedCampo"
+      (selectionChange)="actualizarParametros()">
       <mat-option *ngFor="let campo of camposSelector" value={{campo}}>
         {{campo}}
       </mat-option>
@@ -15,8 +16,8 @@
       <div *ngFor="let prop of propiedadesSeleccionadas">
         <mat-form-field class="param-line">
           <mat-select placeholder="propiedad" [(value)]="prop.propiedad">
-            <mat-option *ngFor="let propCampo of propiedadesCampo" value={{propCampo}}>
-              {{propCampo}}
+            <mat-option *ngFor="let propCampo of propiedadesCampo" value={{propCampo.nombreSimbolico}}>
+              {{propCampo.nombreVisual}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -29,10 +30,22 @@
           </mat-select>
         </mat-form-field>-->
 
-        <mat-form-field id="input-valor" class="param-line" >
+        <mat-form-field class="param-line input-valor" >
           <input matInput placeholder="valor" [(value)]="prop.valor" />
         </mat-form-field>
       </div>
+      <!-- campo propiedad nueva -->
+      <mat-form-field class="param-line">
+        <mat-select placeholder="propiedad" [(value)]="propiedadNueva.propiedad">
+          <mat-option *ngFor="let miPropiedad of propiedadesCampo" value={{miPropiedad.nombreSimbolico}}>
+            {{miPropiedad.nombreVisual}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class="param-line input-valor" >
+        <input matInput placeholder="valor" [(value)]="propiedadNueva.valor" />
+      </mat-form-field>
 
       <button mat-raised-button color="primary" (click)="buscar()" >Buscar</button>
     </mat-card>
