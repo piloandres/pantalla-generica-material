@@ -1,6 +1,8 @@
+import { Columna } from './Columna';
+
 export class Consulta{
     constructor(
-        public parametros: string[],
+        public parametros: Columna[],
         public queryUrl: string
     ){}
 }

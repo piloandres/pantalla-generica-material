@@ -6,6 +6,7 @@ import { MatTable, MatSort } from '@angular/material'
 import { Consulta } from 'src/app/POJOs/Consulta';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Columna } from 'src/app/POJOs/Columna';
 
 @Component({
   selector: 'app-documentos',
@@ -26,7 +27,7 @@ export class DocumentosComponent implements OnInit, OnChanges {
   }
   @Input() consulta: Consulta;
   isLoading: boolean = true;
-  columnas: string[] ;/*= ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
+  columnas: Columna[] ;/*= ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
   "IsReserved"];*/
   documentos: Documento[];
   columnasAMostrar: string[];
@@ -37,18 +38,18 @@ export class DocumentosComponent implements OnInit, OnChanges {
   @ViewChild(MatTable) table: MatTable<any>;
 
   ngOnInit() {
-    this.columnas = this.consulta.parametros;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.obtenerDocumentos();
-    
+    this.updateView(); 
   }
 
   ngOnChanges(changes: SimpleChanges){
+    this.updateView();
+  }
+
+  updateView(){
     this.documentos = [];
     this.dataSource = new MatTableDataSource<Documento>(this.documentos);
     this.columnas = this.consulta.parametros;
-    let columnasDeseadas = this.columnas.slice();
+    let columnasDeseadas = this.columnas.map( c => c.nombreSimbolico);
     columnasDeseadas.push('ver');
     this.columnasAMostrar = columnasDeseadas;
     this.dataSource.paginator = this.paginator;

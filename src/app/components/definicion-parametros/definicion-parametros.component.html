@@ -3,9 +3,9 @@
     <div class="label-f">
       <label>Clases:</label>
     </div>
-    <mat-select placeholder="Seleccione la clase" [(value)]="selectedCampo"
+    <mat-select placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
       (selectionChange)="actualizarParametros()">
-      <mat-option *ngFor="let campo of camposSelector" value={{campo}}>
+      <mat-option *ngFor="let campo of camposSelector" [value]=campo>
         {{campo}}
       </mat-option>
     </mat-select>
@@ -15,8 +15,8 @@
     <mat-card>
       <div *ngFor="let prop of propiedadesSeleccionadas">
         <mat-form-field class="param-line">
-          <mat-select placeholder="propiedad" [(value)]="prop.propiedad">
-            <mat-option *ngFor="let propCampo of propiedadesCampo" value={{propCampo.nombreSimbolico}}>
+          <mat-select placeholder="propiedad" [(ngModel)]="prop.propiedad">
+            <mat-option *ngFor="let propCampo of propiedadesCampo" [value]="propCampo">
               {{propCampo.nombreVisual}}
             </mat-option>
           </mat-select>
@@ -31,20 +31,26 @@
         </mat-form-field>-->
 
         <mat-form-field class="param-line input-valor" >
-          <input matInput [(value)]="prop.valor" />
+            <input matInput [(ngModel)]="prop.valor" *ngIf="prop.tipoInput == 'text'" placeholder="valor" type="text" />
+            <input matInput [(ngModel)]="prop.valorDate" *ngIf="prop.tipoInput == 'date'" placeholder="fecha" type="date" />
+            <input matInput [(ngModel)]="prop.valorNumeric" *ngIf="prop.tipoInput == 'number'" placeholder="valor" type="number" />
+            <mat-checkbox [(ngModel)]="prop.valorBoolean" *ngIf="prop.tipoInput == 'checkbox'"></mat-checkbox>
         </mat-form-field>
       </div>
       <!-- campo propiedad nueva -->
       <mat-form-field class="param-line">
-        <mat-select placeholder="propiedad" [(value)]="propiedadNueva.propiedad">
-          <mat-option *ngFor="let miPropiedad of propiedadesCampo" value={{miPropiedad.nombreSimbolico}}>
+        <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad">
+          <mat-option *ngFor="let miPropiedad of propiedadesCampo" [value]="miPropiedad">
             {{miPropiedad.nombreVisual}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       
       <mat-form-field class="param-line input-valor" >
-        <input matInput [type]="esFecha ? 'date' : 'text'" placeholder="valor" [(ngModel)]="esFecha ? fechaTemp : propiedadNueva.valor" />
+        <input matInput [(ngModel)]="propiedadNueva.valor" *ngIf="propiedadNueva.tipoInput == 'text'" placeholder="valor" type="text" />
+        <input matInput [(ngModel)]="propiedadNueva.valorDate" *ngIf="propiedadNueva.tipoInput == 'date'" placeholder="fecha" type="date" />
+        <input matInput [(ngModel)]="propiedadNueva.valorNumeric" *ngIf="propiedadNueva.tipoInput == 'number'" placeholder="valor" type="number" />
+        <mat-checkbox [(ngModel)]="propiedadNueva.valorBoolean" *ngIf="propiedadNueva.tipoInput == 'checkbox'"></mat-checkbox>
       </mat-form-field>
 
       <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>

@@ -6,6 +6,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { PropiedadService } from 'src/app/services/propiedad.service';
 import { Definicion } from 'src/app/POJOs/Definicion';
 import { Propiedad } from 'src/app/POJOs/Propiedad';
+import { Columna } from 'src/app/POJOs/Columna';
+import { PropiedadSelected } from 'src/app/POJOs/PropiedadSelected';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -22,12 +24,13 @@ export class DefinicionParametrosComponent implements OnInit {
   esUrl: boolean;
   consulta: Consulta;
   selectedCampo: string;
+
   propiedadesCampo: Definicion[] = [];
+
   esFecha: boolean = true;
   fechaTemp: Date = new Date;
 
   propiedadNueva: PropiedadSelected = new PropiedadSelected;
-  
   propiedadesSeleccionadas: PropiedadSelected[] = [];
 
   camposSelector: string[] = [
@@ -49,15 +52,19 @@ export class DefinicionParametrosComponent implements OnInit {
   "IsReserved"],
   "?clave=NombreUsuario&valor=IBMpruebas"
     )*/
-    let nuevasColumnas = this.propiedadesCampo.map( p => p.nombreSimbolico).slice(0,5);
+    let nuevasColumnas = this.propiedadesCampo.map( p => 
+      {
+        return new Columna(p.nombreSimbolico, p.nombreVisual)
+      });
+    //let nuevasColumnas = this.propiedadesCampo.map( p => p.nombreSimbolico).slice(0,5);
     let nuevaQuery = "?";
 
     for(let i=0; i< this.propiedadesSeleccionadas.length; i++){
       if(i > 0 && i < this.propiedadesSeleccionadas.length-1){
         nuevaQuery += '&operador=' + 'AND'+ "&";
       }
-      nuevaQuery += 'clave='+this.propiedadesSeleccionadas[i].propiedad + 
-      '&'+'valor='+this.propiedadesSeleccionadas[i].valor;
+      nuevaQuery += 'clave='+this.propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
+      '&'+'valor='+this.propiedadesSeleccionadas[i].valorCadena;
     }
     this.consulta = null;
     this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
@@ -98,6 +105,11 @@ export class DefinicionParametrosComponent implements OnInit {
 
     
     let columnasArray = columnasInputStr.split(",");
+    let nuevasColumnasArray = columnasArray.map( c => 
+      {
+        const names = c.split(";");
+        return new Columna(names[0],names[1]);
+      })
     //Validar input
     //Ahora los criterios, falta validar
     let criteriosArray = criteriosInputStr.split(",");
@@ -116,18 +128,12 @@ export class DefinicionParametrosComponent implements OnInit {
 
     }
 
+    //Toca cambiar
     this.esUrl = true;
-    this.consulta = new Consulta(columnasArray, nuevaQuery);
+    this.consulta = new Consulta(nuevasColumnasArray, nuevaQuery);
 
   }
 
 }
 
-export class PropiedadSelected {
-  
-    public propiedad: string;
-    public condicion: string;
-    public valor: string;
-    public valorDate: Date;
-    public tipo: string;
-}
+
