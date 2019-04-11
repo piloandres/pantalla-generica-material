@@ -37,6 +37,28 @@ export class DocumentoService {
     );
   }
 
+  obtenerArchivoPorDocumento(id: string): Observable<any>{
+    let url = ValoresConfiguracion.uriArchivosClase;
+    const httpOptions = {
+      observe: 'response',
+      headers: new HttpHeaders(
+        {
+        'IP':ValoresConfiguracion.headerIpDocumentos
+        }
+        )
+    }
+
+    return this.http.get(`${url}/${id}`,
+    {
+      observe: 'response', 
+      headers: new HttpHeaders({'IP':ValoresConfiguracion.headerIpDocumentos}),
+      responseType: 'arraybuffer'
+    }).pipe( 
+    catchError(this.handleError<any>('Obtener archivo documento')) ) ;
+  }
+
+  
+
   private handleError<T>(operacion, resultado?:T){
     return (error: any): Observable<T> => {
       console.error(error);

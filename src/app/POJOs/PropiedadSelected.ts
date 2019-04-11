@@ -6,6 +6,7 @@ export class PropiedadSelected {
     constructor(){
       this.propiedad = new Definicion;
       this.valorDate = new Date;
+      this.datePipe = new DatePipe('en-US');
     }
   
       public propiedad: Definicion;

@@ -21,6 +21,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
+
+import { DialogChoose } from 'src/app/components/documentos/documentos.component';
 
 
 
@@ -28,7 +32,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   declarations: [
     AppComponent,
     DocumentosComponent,
-    DefinicionParametrosComponent
+    DefinicionParametrosComponent,
+    DialogChoose
   ],
   imports: [
     BrowserModule,
@@ -47,9 +52,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AppRoutingModule,
     FormsModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [DatePipe],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    DialogChoose
+  ]
 })
 export class AppModule { }

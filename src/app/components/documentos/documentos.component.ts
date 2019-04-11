@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges, Inject } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Documento } from '../../POJOs/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -7,6 +7,7 @@ import { Consulta } from 'src/app/POJOs/Consulta';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Columna } from 'src/app/POJOs/Columna';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-documentos',
@@ -18,7 +19,8 @@ export class DocumentosComponent implements OnInit, OnChanges {
   constructor(
     private documentoService: DocumentoService,
     iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
+    sanitizer: DomSanitizer,
+    public dialog: MatDialog
   ) { 
     iconRegistry.addSvgIcon(
       'fileIcon',
@@ -91,6 +93,55 @@ export class DocumentosComponent implements OnInit, OnChanges {
 
   mostrarArchivo(laFila:Documento){
     console.log(laFila);
+    this.documentoService.obtenerArchivoPorDocumento(laFila.idDocumento)
+    .subscribe( r => 
+      {
+        this.abrirDialog();
+      //this.descargarArchivo(r.body,r.headers.get('Content-Type'))
+      });
   }
 
+  private descargarArchivo(data: any, tipo: string){
+    let binaryData = [];
+    binaryData.push(data);
+    let miBlob = new Blob([data], {type: tipo});
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: tipo}));
+    downloadLink.download = "documento_nuevo.pdf";
+    downloadLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  }
+
+  abrirDialog(): void {
+    const dialogRef = this.dialog.open(DialogChoose, {
+      width: '350px',
+      data: {info: "whatever"}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El resultado fue'+ result);
+    });
+  }
+
+}
+
+@Component({
+  selector: 'dialog-choose',
+  templateUrl: 'dialog-choose.html',
+})
+
+export class DialogChoose {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogChoose>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface DialogData {
+  info: string;
+  respuesta: string;
 }
