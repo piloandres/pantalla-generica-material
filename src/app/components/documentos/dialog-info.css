@@ -1,0 +1,16 @@
+h1 {
+    color: #029100;
+}
+
+strong {
+    color: #bfbfbf;
+    display: inline-block;
+}
+
+p {
+    display: inline-block;
+}
+
+.separator {
+    padding-bottom: 1%;
+}

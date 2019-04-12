@@ -22,9 +22,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import { DatePipe } from '@angular/common';
 
 import { DialogChoose } from 'src/app/components/documentos/documentos.component';
+import { DialogInfo } from 'src/app/components/documentos/documentos.component';
 
 
 
@@ -33,7 +35,8 @@ import { DialogChoose } from 'src/app/components/documentos/documentos.component
     AppComponent,
     DocumentosComponent,
     DefinicionParametrosComponent,
-    DialogChoose
+    DialogChoose,
+    DialogInfo
   ],
   imports: [
     BrowserModule,
@@ -53,12 +56,14 @@ import { DialogChoose } from 'src/app/components/documentos/documentos.component
     FormsModule,
     MatIconModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDividerModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [
-    DialogChoose
+    DialogChoose,
+    DialogInfo
   ]
 })
 export class AppModule { }

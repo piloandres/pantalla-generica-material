@@ -1,3 +1,6 @@
+::ng-deep :root {
+    --bolivar-color: #029100;
+}
 .param-line {
     display: inline-block;
     margin-right: 2%;
@@ -8,11 +11,16 @@
 }
 
 .label-f{
-    margin-bottom: 4%;
+    margin-bottom: 2%;
 }
 
 .input-valor{
     padding-left: 1%;
     width: 42%;
+}
+
+label {
+    color: var(--bolivar-color);
+    font-weight: 500;
 }
 

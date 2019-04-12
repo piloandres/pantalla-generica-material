@@ -14,6 +14,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   templateUrl: './documentos.component.html',
   styleUrls: ['./documentos.component.css']
 })
+
 export class DocumentosComponent implements OnInit, OnChanges {
 //Hay un bug con los botones de ordenar
   constructor(
@@ -24,9 +25,13 @@ export class DocumentosComponent implements OnInit, OnChanges {
   ) { 
     iconRegistry.addSvgIcon(
       'fileIcon',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/file-icon.svg')
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/file-icon.svg'));
+    iconRegistry.addSvgIcon(
+      'showIcon',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/show-icon.svg')
     );
   }
+
   @Input() consulta: Consulta;
   isLoading: boolean = true;
   columnas: Columna[] ;/*= ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
@@ -52,6 +57,7 @@ export class DocumentosComponent implements OnInit, OnChanges {
     this.dataSource = new MatTableDataSource<Documento>(this.documentos);
     this.columnas = this.consulta.parametros;
     let columnasDeseadas = this.columnas.map( c => c.nombreSimbolico);
+    columnasDeseadas.push('details');
     columnasDeseadas.push('ver');
     this.columnasAMostrar = columnasDeseadas;
     this.dataSource.paginator = this.paginator;
@@ -96,30 +102,77 @@ export class DocumentosComponent implements OnInit, OnChanges {
     this.documentoService.obtenerArchivoPorDocumento(laFila.idDocumento)
     .subscribe( r => 
       {
-        this.abrirDialog();
-      //this.descargarArchivo(r.body,r.headers.get('Content-Type'))
+        let nomArchivo = this.obtenerNombreArchivo(r.headers.get("Content-Disposition"));
+        this.abrirDialog(r.body,r.headers.get('Content-Type'),nomArchivo);
       });
   }
 
-  private descargarArchivo(data: any, tipo: string){
+  mostrarInfoDocumento(doc: Documento){
+    this.abrirDialogInfo(doc);
+  }
+
+  private obtenerNombreArchivo(texto: string): string{
+    let cadena = texto.split(";")[1].split('"')[1].trim();
+    return cadena;
+  }
+
+  private descargarArchivo(data: any, tipo: string, nombre:string){
+    
     let binaryData = [];
     binaryData.push(data);
-    let miBlob = new Blob([data], {type: tipo});
+    //let miBlob = new Blob([data], {type: tipo});
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: tipo}));
-    downloadLink.download = "documento_nuevo.pdf";
+    let extension = extensionesPorArchivo[tipo];
+    downloadLink.download = `${nombre}.${extension}`;
     downloadLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
   }
 
-  abrirDialog(): void {
+  private abrirArchivo(data: any, tipo: string, nombre:string){
+    
+    let binaryData = [];
+    binaryData.push(data);
+    let b =document.getElementById("pruebas2");
+    //let miBlob = new Blob([data], {type: tipo});
+    let downloadLink = document.createElement('a');
+    b.appendChild(downloadLink);
+    downloadLink.target = "_blank";
+    let nameUrl = URL.createObjectURL(new Blob(binaryData, {type: tipo}));
+    downloadLink.href = nameUrl;
+    
+    //b.appendChild(downloadLink);
+    
+    //downloadLink.click()
+    /*let extension = extensionesPorArchivo[tipo];
+    downloadLink.download = `${nombre}.${extension}`;
+    downloadLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));*/
+  }
+
+  abrirDialog(data: any, tipo: string, nombreArchivo: string): void {
     const dialogRef = this.dialog.open(DialogChoose, {
       width: '350px',
-      data: {info: "whatever"}
+      data: {info: nombreArchivo}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El resultado fue'+ result);
+      if(result == "descargar"){
+        this.descargarArchivo(data,tipo, nombreArchivo);
+      }else if (result == "abrir"){
+        this.abrirArchivo(data, tipo, nombreArchivo);
+      }
     });
+  }
+
+  abrirDialogInfo(doc: Documento){
+    const dialogRef = this.dialog.open(DialogInfo, {
+      width: '55%',
+      height: '80%',
+      data: {documentoInfo:doc}
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      console.log("salio de dialog info")
+    })
   }
 
 }
@@ -145,3 +198,32 @@ export interface DialogData {
   info: string;
   respuesta: string;
 }
+
+
+@Component({
+  selector: 'dialog-info',
+  templateUrl: 'dialog-info.html',
+  styleUrls: ['dialog-info.css']
+})
+
+export class DialogInfo {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogInfo>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogInfoData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface DialogInfoData{
+  documentoInfo: Documento;
+}
+
+export const extensionesPorArchivo: { [key: string]: string } = {
+  ["application/pdf"]: "pdf",
+  ["image/jpeg"]: "jpg",
+  ["application/vnd.ms-excel"]: "xls"
+};
