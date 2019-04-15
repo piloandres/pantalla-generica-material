@@ -1,5 +1,48 @@
+::ng-deep :root {
+    --bolivar-color: #029100;
+}
+
 .global-container {
     padding-top: 2%;
     width: 70%;
     margin: auto;
+}
+
+#top-bar{
+    background: rgba(245,245,245,1);
+background: -moz-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+background: -webkit-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+background: -o-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+background: -ms-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+background: linear-gradient(to bottom, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#e3e3e3', GradientType=0 );
+}
+
+#image-bar{
+    height: 2.3em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 10em;
+}
+
+#parr-first {
+    display: inline-block;
+    margin-left: 2em;
+    margin-bottom: 1em;
+}
+
+#label-one{
+    color: #585858;
+    text-transform: uppercase;
+    font-weight: 560;
+    font-size: 0.8em;
+    font-family: 'Verdana';
+    display: table-row-group;
+}
+
+#tittle-first{
+    color: var(--bolivar-color);
+    display: table-row-group;
+    font-family: 'Verdana';
+    font-size: 0.8em;
 }

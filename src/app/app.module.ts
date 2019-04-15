@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { DatePipe } from '@angular/common';
 
 import { DialogChoose } from 'src/app/components/documentos/documentos.component';
@@ -57,7 +58,8 @@ import { DialogInfo } from 'src/app/components/documentos/documentos.component';
     MatIconModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatDividerModule
+    MatDividerModule,
+    MatToolbarModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
