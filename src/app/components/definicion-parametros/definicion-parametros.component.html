@@ -13,9 +13,10 @@
 
   <div *ngIf="selectedCampo" id="first-group">
     <mat-card>
+      <label id="label-cri">Criterios de busqueda</label><br>
       <div *ngFor="let prop of propiedadesSeleccionadas">
         <mat-form-field class="param-line">
-          <mat-select placeholder="propiedad" [(ngModel)]="prop.propiedad">
+          <mat-select class="input-col" placeholder="propiedad" [(ngModel)]="prop.propiedad">
             <mat-option *ngFor="let propCampo of propiedadesCampo" [value]="propCampo">
               {{propCampo.nombreVisual}}
             </mat-option>
