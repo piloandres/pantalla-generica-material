@@ -38,35 +38,46 @@ export class DefinicionParametrosComponent implements OnInit {
     "CD_Poliza"
   ]
 
+  columnasAMostrar: Columna[] = [
+    new Columna("DocumentTitle", "Título del documento"),
+    new Columna("FechaexpedicionDocumento", "Fecha de expedición del documento"),
+    new Columna("NombreUsuario", "Nombre de Usuario"),
+    new Columna("NoCaso", "No. Caso"),
+    new Columna("NumeroIdentificacionCliente", "Número de Identificación de cliente"),
+    new Columna("TipoDocumentoIdCliente", "Tipo de documento de identificacion cliente"),
+    new Columna("Nombredeldocumento", "Nombre del Documento"),
+    new Columna("MimeType", "Tipo de MIME")
+  ]
+
   ngOnInit() {
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
   }
 
   //Eventos
-  //Aqui falta lo de la condicion logica, y tener en cuenta mandar
-  //nombres visuales y simbolicos, solo se mandan simbolicos
+  //Aqui falta lo de la condicion logica
   buscar(){
     /*this.consulta = new Consulta(
       ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
   "IsReserved"],
   "?clave=NombreUsuario&valor=IBMpruebas"
     )*/
-    let nuevasColumnas = this.propiedadesCampo.map( p => 
+    let nuevasColumnas = this.columnasAMostrar;/*this.propiedadesCampo.map( p => 
       {
         return new Columna(p.nombreSimbolico, p.nombreVisual)
-      });
+      });*/
     //let nuevasColumnas = this.propiedadesCampo.map( p => p.nombreSimbolico).slice(0,5);
     let nuevaQuery = "?";
-
+    //&& i < this.propiedadesSeleccionadas.length-1
     for(let i=0; i< this.propiedadesSeleccionadas.length; i++){
-      if(i > 0 && i < this.propiedadesSeleccionadas.length-1){
+      if(i > 0 ){
         nuevaQuery += '&operador=' + 'AND'+ "&";
       }
       nuevaQuery += 'clave='+this.propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
       '&'+'valor='+this.propiedadesSeleccionadas[i].valorCadena;
     }
     this.consulta = null;
+    console.log(nuevaQuery);
     this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
   }
 

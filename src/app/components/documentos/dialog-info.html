@@ -1,6 +1,8 @@
 <h1 mat-dialog-title>Datos documento</h1>
 <div class="separator" *ngFor="let prop of data.documentoInfo.propiedades.propiedad">
-  <strong>{{prop.clave}}</strong> : <p>{{prop.valor}}</p>
+  <div *ngIf="prop.clave != 'Id'">
+      <strong>{{prop.clave}}</strong> : <p>{{prop.valor}}</p>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cerrar</button>
