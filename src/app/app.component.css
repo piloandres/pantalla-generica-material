@@ -10,12 +10,12 @@
 
 #top-bar{
     background: rgba(245,245,245,1);
-background: -moz-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
-background: -webkit-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
-background: -o-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
-background: -ms-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
-background: linear-gradient(to bottom, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#e3e3e3', GradientType=0 );
+    background: -moz-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+    background: -o-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+    background: -ms-linear-gradient(top, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+    background: linear-gradient(to bottom, rgba(245,245,245,1) 23%, rgba(245,245,245,1) 24%, rgba(235,235,235,1) 53%, rgba(227,227,227,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#e3e3e3', GradientType=0 );
 }
 
 #image-bar{
@@ -27,7 +27,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 
 #parr-first {
     display: inline-block;
-    margin-left: 2em;
+    margin-left: 1em;
     margin-bottom: 1em;
 }
 
@@ -45,4 +45,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
     display: table-row-group;
     font-family: 'Verdana';
     font-size: 0.8em;
+}
+
+#line-separator{
+    display: inline-block;
+    height: 2.3em;
+    border-left: 1px solid rgb(180, 179, 179);
+    margin-left: 1em;
+    margin-bottom: 1em;
 }
