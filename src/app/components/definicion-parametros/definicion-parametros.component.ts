@@ -57,7 +57,7 @@ export class DefinicionParametrosComponent implements OnInit {
     new Columna("TipoDocumentoIdCliente", "Tipo de documento de identificacion cliente"),
     new Columna("Nombredeldocumento", "Nombre del Documento"),
     new Columna("MimeType", "Tipo de MIME")
-  ]
+  ];
 
   ngOnInit() {
     this.propiedadNueva.valor ="";
@@ -69,9 +69,12 @@ export class DefinicionParametrosComponent implements OnInit {
   buscar(){
     let nuevasColumnas = this.columnasAMostrar;
     let nuevaQuery = this.propiedadService.construirQuery(this.propiedadesSeleccionadas);
-    this.camposDesabilitado = true;
-    //console.log(nuevaQuery);
-    this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
+    if(nuevaQuery != undefined){
+      this.camposDesabilitado = true;
+      console.log(nuevaQuery);
+      this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
+    }
+    
   }
 
   agregarPropiedad(){
@@ -90,6 +93,9 @@ export class DefinicionParametrosComponent implements OnInit {
         this.propiedadNueva.valor ="";
       },
       error => {
+        this.propiedadesSeleccionadas = [];
+        this.propiedadesCampo = [];
+        this.propiedadNueva.valor ="";
         console.log("Aqui se debe mostrar el error en la interfaz de usuario")
       }
       );
@@ -130,7 +136,7 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   limpiarInput(propiedadActual: PropiedadSelected){
-    console.log("entro a limpiar input");
+    //console.log("entro a limpiar input");
     propiedadActual.valor = "";
     propiedadActual.valorDate = new Date;
     propiedadActual.valorNumeric = undefined;

@@ -74,6 +74,11 @@ export class DocumentosComponent implements OnInit, OnChanges {
       {
         this.onCargado.emit();
         this.documentos = documentoDTO.documento;
+        this.isLoading = false;
+        this.dataSource = new MatTableDataSource<Documento>(this.documentos);
+        this.dataSource.paginator = this.paginator;
+        this.table.renderRows();
+        this.dataSource.sort = this.sort;
       }, error => {
         this.onCargado.emit();
         this.isLoading = false;

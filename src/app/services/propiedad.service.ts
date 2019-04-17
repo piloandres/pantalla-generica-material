@@ -40,7 +40,7 @@ export class PropiedadService {
     return (error: any): Observable<T> => {
       console.error(error);
       console.log(`${operacion} failed: ${error.message}`);
-      return of(resultado as T);
+      return Observable.throw(error);
     }
   }
 
@@ -48,6 +48,9 @@ export class PropiedadService {
     let nuevaQuery = "?";
     //&& i < this.propiedadesSeleccionadas.length-1
     for(let i=0; i< propiedadesSeleccionadas.length; i++){
+      if(propiedadesSeleccionadas[i].valorCadena == "" || !propiedadesSeleccionadas[i].propiedad.nombreSimbolico){
+        return undefined;
+      }
       if(i > 0 ){
         nuevaQuery += '&operador=' + 'AND'+ "&";
       }
