@@ -32,16 +32,15 @@
         </mat-form-field>-->
 
         <mat-form-field class="param-line input-valor" >
-            <mat-select [(ngModel)]="prop.valorOpcion" *ngIf="prop.tipoInput == 'select'" placeholder="seleccione" >
-              <mat-option *ngFor="let opt of pruebaOpciones" [value]="opt.valorOpcion">
-                {{opt.nombreOpcion}}
-              </mat-option>
-            </mat-select>
             <input matInput [(ngModel)]="prop.valor" *ngIf="prop.tipoInput == 'text'" placeholder="valor" type="text" />
             <input matInput [(ngModel)]="prop.valorDate" *ngIf="prop.tipoInput == 'date'" placeholder="fecha" type="date" />
             <input matInput [(ngModel)]="prop.valorNumeric" *ngIf="prop.tipoInput == 'number'" placeholder="valor" type="number" />
             <mat-checkbox [(ngModel)]="prop.valorBoolean" *ngIf="prop.tipoInput == 'checkbox'"></mat-checkbox>
-            
+            <mat-select [(ngModel)]="prop.valorOpcion" *ngIf="prop.tipoInput == 'select'" placeholder="seleccione" >
+                <mat-option *ngFor="let opt of prop.propiedad.lista.opcion" [value]="opt.valorOpcion">
+                  {{opt.nombreOpcion}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
         <div class="param-line">
           <button mat-icon-button (click)="eliminarPorpSeleccionada(i)">
@@ -64,6 +63,11 @@
         <input matInput [(ngModel)]="propiedadNueva.valorDate" *ngIf="propiedadNueva.tipoInput == 'date'" placeholder="fecha" type="date" />
         <input matInput [(ngModel)]="propiedadNueva.valorNumeric" *ngIf="propiedadNueva.tipoInput == 'number'" placeholder="valor" type="number" />
         <mat-checkbox [(ngModel)]="propiedadNueva.valorBoolean" *ngIf="propiedadNueva.tipoInput == 'checkbox'"></mat-checkbox>
+        <mat-select [(ngModel)]="propiedadNueva.valorOpcion" *ngIf="propiedadNueva.tipoInput == 'select'" placeholder="seleccione" >
+            <mat-option *ngFor="let opti of propiedadNueva.propiedad.lista.opcion" [value]="opti.valorOpcion">
+              {{opti.nombreOpcion}}
+            </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>

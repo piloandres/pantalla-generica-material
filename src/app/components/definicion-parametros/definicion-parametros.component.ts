@@ -48,8 +48,6 @@ export class DefinicionParametrosComponent implements OnInit {
     "CD_Poliza"
   ]
 
-  pruebaOpciones: OpcionLista[] = [];
-
   columnasAMostrar: Columna[] = [
     new Columna("DocumentTitle", "Título del documento"),
     new Columna("FechaexpedicionDocumento", "Fecha de expedición del documento"),
@@ -62,10 +60,6 @@ export class DefinicionParametrosComponent implements OnInit {
   ]
 
   ngOnInit() {
-    let nueva = new OpcionLista;
-    nueva.nombreOpcion ="a";
-    nueva.valorOpcion ="a";
-    this.pruebaOpciones.push(nueva);
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
   }
