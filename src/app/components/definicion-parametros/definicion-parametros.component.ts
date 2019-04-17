@@ -8,6 +8,9 @@ import { Definicion } from 'src/app/POJOs/Definicion';
 import { Propiedad } from 'src/app/POJOs/Propiedad';
 import { Columna } from 'src/app/POJOs/Columna';
 import { PropiedadSelected } from 'src/app/POJOs/PropiedadSelected';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
+import { OpcionLista } from 'src/app/POJOs/OpcionLista';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -18,12 +21,19 @@ export class DefinicionParametrosComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private propiedadService: PropiedadService
-  ) { }
+    private propiedadService: PropiedadService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
+    iconRegistry.addSvgIcon(
+      'x-icon',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/cancel.svg'));
+   }
   
   esUrl: boolean;
   consulta: Consulta;
   selectedCampo: string;
+  camposDesabilitado: boolean = false;
 
   propiedadesCampo: Definicion[] = [];
 
@@ -38,6 +48,8 @@ export class DefinicionParametrosComponent implements OnInit {
     "CD_Poliza"
   ]
 
+  pruebaOpciones: OpcionLista[] = [];
+
   columnasAMostrar: Columna[] = [
     new Columna("DocumentTitle", "Título del documento"),
     new Columna("FechaexpedicionDocumento", "Fecha de expedición del documento"),
@@ -50,6 +62,10 @@ export class DefinicionParametrosComponent implements OnInit {
   ]
 
   ngOnInit() {
+    let nueva = new OpcionLista;
+    nueva.nombreOpcion ="a";
+    nueva.valorOpcion ="a";
+    this.pruebaOpciones.push(nueva);
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
   }
@@ -76,7 +92,8 @@ export class DefinicionParametrosComponent implements OnInit {
       nuevaQuery += 'clave='+this.propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
       '&'+'valor='+this.propiedadesSeleccionadas[i].valorCadena;
     }
-    this.consulta = null;
+    this.camposDesabilitado = true;
+    //this.consulta = null;
     console.log(nuevaQuery);
     this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
   }
@@ -143,6 +160,22 @@ export class DefinicionParametrosComponent implements OnInit {
     this.esUrl = true;
     this.consulta = new Consulta(nuevasColumnasArray, nuevaQuery);
 
+  }
+
+  habilitarCampos(){
+    this.camposDesabilitado = false;
+  }
+
+  eliminarPorpSeleccionada(i:number){
+    this.propiedadesSeleccionadas.splice(i,1);
+  }
+
+  limpiarInput(propiedadActual: PropiedadSelected){
+    console.log("entro a limpiar input");
+    propiedadActual.valor = "";
+    propiedadActual.valorDate = new Date;
+    propiedadActual.valorNumeric = undefined;
+    propiedadActual.valorBoolean = false;
   }
 
 }

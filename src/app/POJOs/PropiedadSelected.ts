@@ -15,6 +15,7 @@ export class PropiedadSelected {
       public valorDate: Date;
       public valorNumeric: number;
       public valorBoolean: boolean;
+      public valorOpcion: string;
       public tipo: string;
       public datePipe: DatePipe;
   
@@ -28,6 +29,8 @@ export class PropiedadSelected {
           return "number";
         }else if (tipoActual == "BOOL"){
           return "checkbox";
+        }else if( tipoActual == "LISTA"){
+          return "select"
         }
         return "text";
       }
@@ -42,6 +45,8 @@ export class PropiedadSelected {
           return (this.valorNumeric+"");
         }else if (tipoActual == "BOOL"){
           return (this.valorBoolean+"");
+        }else if (tipoActual == "LIST"){
+          return this.valorOpcion;
         }
         return "";
       }

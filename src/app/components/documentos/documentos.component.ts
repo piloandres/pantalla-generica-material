@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges, Inject, Output, OnDestroy } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Documento } from '../../POJOs/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -8,6 +8,7 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Columna } from 'src/app/POJOs/Columna';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-documentos',
@@ -16,7 +17,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 
 export class DocumentosComponent implements OnInit, OnChanges {
-//Hay un bug con los botones de ordenar
+//Los botones de ordenar no funcionan
   constructor(
     private documentoService: DocumentoService,
     iconRegistry: MatIconRegistry,
@@ -33,9 +34,10 @@ export class DocumentosComponent implements OnInit, OnChanges {
   }
 
   @Input() consulta: Consulta;
+  @Output() onCargado = new EventEmitter();
+
   isLoading: boolean = true;
-  columnas: Columna[] ;/*= ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
-  "IsReserved"];*/
+  columnas: Columna[] ;
   documentos: Documento[];
   columnasAMostrar: string[];
   dataSource = new MatTableDataSource<Documento>(this.documentos);
@@ -45,7 +47,7 @@ export class DocumentosComponent implements OnInit, OnChanges {
   @ViewChild(MatTable) table: MatTable<any>;
 
   ngOnInit() {
-    this.updateView(); 
+    //this.updateView(); 
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -70,6 +72,7 @@ export class DocumentosComponent implements OnInit, OnChanges {
     this.documentoService.obtenerDocumentos(this.consulta.queryUrl)
     .subscribe( documentoDTO => 
       {
+        this.onCargado.emit();
         this.isLoading = false;
         this.documentos = documentoDTO.documento;
         this.dataSource = new MatTableDataSource<Documento>(this.documentos);

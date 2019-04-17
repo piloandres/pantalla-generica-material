@@ -14,9 +14,9 @@
   <div *ngIf="selectedCampo" id="first-group">
     <mat-card>
       <label id="label-cri">Criterios de busqueda</label><br>
-      <div *ngFor="let prop of propiedadesSeleccionadas">
+      <div *ngFor="let prop of propiedadesSeleccionadas; let i = index">
         <mat-form-field class="param-line">
-          <mat-select class="input-col" placeholder="propiedad" [(ngModel)]="prop.propiedad">
+          <mat-select class="input-col" (selectionChange)="limpiarInput(prop)" placeholder="propiedad" [(ngModel)]="prop.propiedad" >
             <mat-option *ngFor="let propCampo of propiedadesCampo" [value]="propCampo">
               {{propCampo.nombreVisual}}
             </mat-option>
@@ -32,15 +32,27 @@
         </mat-form-field>-->
 
         <mat-form-field class="param-line input-valor" >
+            <mat-select [(ngModel)]="prop.valorOpcion" *ngIf="prop.tipoInput == 'select'" placeholder="seleccione" >
+              <mat-option *ngFor="let opt of pruebaOpciones" [value]="opt.valorOpcion">
+                {{opt.nombreOpcion}}
+              </mat-option>
+            </mat-select>
             <input matInput [(ngModel)]="prop.valor" *ngIf="prop.tipoInput == 'text'" placeholder="valor" type="text" />
             <input matInput [(ngModel)]="prop.valorDate" *ngIf="prop.tipoInput == 'date'" placeholder="fecha" type="date" />
             <input matInput [(ngModel)]="prop.valorNumeric" *ngIf="prop.tipoInput == 'number'" placeholder="valor" type="number" />
             <mat-checkbox [(ngModel)]="prop.valorBoolean" *ngIf="prop.tipoInput == 'checkbox'"></mat-checkbox>
+            
         </mat-form-field>
+        <div class="param-line">
+          <button mat-icon-button (click)="eliminarPorpSeleccionada(i)">
+              <mat-icon svgIcon="x-icon"></mat-icon>
+          </button>
+        </div>
+
       </div>
       <!-- campo propiedad nueva -->
       <mat-form-field class="param-line">
-        <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad">
+        <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad" (selectionChange)="limpiarInput(propiedadNueva)" >
           <mat-option *ngFor="let miPropiedad of propiedadesCampo" [value]="miPropiedad">
             {{miPropiedad.nombreVisual}}
           </mat-option>
@@ -57,11 +69,11 @@
       <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>
 
       <div *ngIf="propiedadesSeleccionadas.length > 0">
-        <button mat-raised-button color="primary" (click)="buscar()" >Buscar</button>
+        <button mat-raised-button color="primary" [disabled]="camposDesabilitado" (click)="buscar()" >Buscar</button>
       </div>
     </mat-card>
   </div>
 </div>
 <div *ngIf="consulta">
-  <app-documentos [consulta]="consulta"></app-documentos>
+  <app-documentos [consulta]="consulta" (onCargado)="habilitarCampos()"></app-documentos>
 </div>
