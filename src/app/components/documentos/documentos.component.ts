@@ -62,8 +62,8 @@ export class DocumentosComponent implements OnInit, OnChanges {
     columnasDeseadas.push('details');
     columnasDeseadas.push('ver');
     this.columnasAMostrar = columnasDeseadas;
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.obtenerDocumentos();
   }
 
@@ -73,12 +73,16 @@ export class DocumentosComponent implements OnInit, OnChanges {
     .subscribe( documentoDTO => 
       {
         this.onCargado.emit();
-        this.isLoading = false;
         this.documentos = documentoDTO.documento;
+      }, error => {
+        this.onCargado.emit();
+        this.isLoading = false;
+        this.documentos = [];
         this.dataSource = new MatTableDataSource<Documento>(this.documentos);
         this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
         this.table.renderRows();
+        this.dataSource.sort = this.sort;
+        console.log("Aquí se deberia mostrar un error en pantalla")
       });
   }
 
@@ -95,6 +99,9 @@ export class DocumentosComponent implements OnInit, OnChanges {
       {
         let nomArchivo = this.documentoService.obtenerNombreArchivo(r.headers.get("Content-Disposition"));
         this.abrirDialog(r.body,r.headers.get('Content-Type'),nomArchivo);
+      },
+      error =>{
+        console.log("Aqui se debe mostrar error en pantalla")
       });
   }
 
@@ -132,6 +139,9 @@ export class DocumentosComponent implements OnInit, OnChanges {
       }else if (result == "abrir"){
         this.abrirArchivo(data, tipo, nombreArchivo);
       }
+    },
+    error =>{
+      console.log("Aqui se debe mostrar el error en la interfaz de usuario")
     });
   }
 
@@ -144,6 +154,9 @@ export class DocumentosComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe( result => {
       console.log("salio de dialog info")
+    },
+    error =>{
+      console.log("Aqui se debe mostrar el error en la interfaz de usuario")
     })
   }
 

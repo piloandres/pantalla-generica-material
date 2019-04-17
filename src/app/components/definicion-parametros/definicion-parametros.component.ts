@@ -88,6 +88,9 @@ export class DefinicionParametrosComponent implements OnInit {
         this.propiedadesSeleccionadas = [];
         this.propiedadesCampo = p;
         this.propiedadNueva.valor ="";
+      },
+      error => {
+        console.log("Aqui se debe mostrar el error en la interfaz de usuario")
       }
       );
   }

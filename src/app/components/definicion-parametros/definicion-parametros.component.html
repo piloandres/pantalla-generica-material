@@ -3,7 +3,7 @@
     <div class="label-f">
       <label>Clases</label>
     </div>
-    <mat-select placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
+    <mat-select [disabled]="camposDesabilitado" placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
       (selectionChange)="actualizarParametros()">
       <mat-option *ngFor="let campo of camposSelector" [value]=campo>
         {{campo}}

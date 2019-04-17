@@ -34,7 +34,7 @@ export class DocumentoService {
     console.log("obtencion documentos");
     return this.http.get<DocumentoGlobal>(urlQuery, httpOptions)
     .pipe( tap( d => console.log("obtencion de documentos") ),
-    catchError( this.handleError<DocumentoGlobal>('obtenerDocumentos'))
+    catchError( this.handleError<any>('obtenerDocumentos'))
     );
   }
 
@@ -62,7 +62,7 @@ export class DocumentoService {
     return (error: any): Observable<T> => {
       console.error(error);
       console.log(`${operacion} failed: ${error.message}`);
-      return of(resultado as T);
+      return Observable.throw(error);
     }
   }
 
