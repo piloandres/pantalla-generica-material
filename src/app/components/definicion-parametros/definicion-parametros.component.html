@@ -49,7 +49,6 @@
         </div>
 
       </div>
-      <!-- campo propiedad nueva -->
       <mat-form-field class="param-line">
         <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad" (selectionChange)="limpiarInput(propiedadNueva)" >
           <mat-option *ngFor="let miPropiedad of propiedadesCampo" [value]="miPropiedad">

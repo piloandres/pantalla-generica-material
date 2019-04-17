@@ -84,28 +84,16 @@ export class DocumentosComponent implements OnInit, OnChanges {
 
   //Eventos
   obtenerValorPropiedad(doc:Documento, prop:string){
-    let valorEncontrado = "...";
-    let i = 0;
-    let encontro = false;
-    while( i < doc.propiedades.propiedad.length && !encontro){
-        if(doc.propiedades.propiedad[i].clave.trim() == prop.trim()){
-            valorEncontrado = doc.propiedades.propiedad[i].valor;
-            encontro = true;
-        }
-        ++i;
-    }
-    if(valorEncontrado == ""){
-      valorEncontrado = "...";
-    }
+    let valorEncontrado = this.documentoService.obtenerValorPropiedad(doc, prop);
     return valorEncontrado;
   }
 
   mostrarArchivo(laFila:Documento){
-    console.log(laFila);
+    //console.log(laFila);
     this.documentoService.obtenerArchivoPorDocumento(laFila.idDocumento)
     .subscribe( r => 
       {
-        let nomArchivo = this.obtenerNombreArchivo(r.headers.get("Content-Disposition"));
+        let nomArchivo = this.documentoService.obtenerNombreArchivo(r.headers.get("Content-Disposition"));
         this.abrirDialog(r.body,r.headers.get('Content-Type'),nomArchivo);
       });
   }
@@ -114,16 +102,9 @@ export class DocumentosComponent implements OnInit, OnChanges {
     this.abrirDialogInfo(doc);
   }
 
-  private obtenerNombreArchivo(texto: string): string{
-    let cadena = texto.split(";")[1].split('"')[1].trim();
-    return cadena;
-  }
-
   private descargarArchivo(data: any, tipo: string, nombre:string){
-    
     let binaryData = [];
     binaryData.push(data);
-    //let miBlob = new Blob([data], {type: tipo});
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: tipo}));
     let extension = extensionesPorArchivo[tipo];
@@ -135,20 +116,8 @@ export class DocumentosComponent implements OnInit, OnChanges {
     
     let binaryData = [];
     binaryData.push(data);
-    let b =document.getElementById("pruebas2");
-    //let miBlob = new Blob([data], {type: tipo});
-    let downloadLink = document.createElement('a');
-    b.appendChild(downloadLink);
-    downloadLink.target = "_blank";
-    let nameUrl = URL.createObjectURL(new Blob(binaryData, {type: tipo}));
-    downloadLink.href = nameUrl;
-    
-    //b.appendChild(downloadLink);
-    
-    //downloadLink.click()
-    /*let extension = extensionesPorArchivo[tipo];
-    downloadLink.download = `${nombre}.${extension}`;
-    downloadLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));*/
+    let nameUrl = window.URL.createObjectURL(new Blob(binaryData, {type: tipo}));
+    window.open(nameUrl, "_blank");
   }
 
   abrirDialog(data: any, tipo: string, nombreArchivo: string): void {

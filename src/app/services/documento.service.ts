@@ -4,6 +4,7 @@ import { DocumentoGlobal } from '../POJOs/DocumentoGlobal';
 import { ValoresConfiguracion } from '../configuration/configuracion';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators'
+import { Documento } from '../POJOs/Documento';
 
 @Injectable({
   providedIn: 'root'
@@ -57,13 +58,33 @@ export class DocumentoService {
     catchError(this.handleError<any>('Obtener archivo documento')) ) ;
   }
 
-  
-
   private handleError<T>(operacion, resultado?:T){
     return (error: any): Observable<T> => {
       console.error(error);
       console.log(`${operacion} failed: ${error.message}`);
       return of(resultado as T);
     }
+  }
+
+  obtenerValorPropiedad(doc:Documento, prop:string): string {
+    let valorEncontrado = "...";
+    let i = 0;
+    let encontro = false;
+    while( i < doc.propiedades.propiedad.length && !encontro){
+        if(doc.propiedades.propiedad[i].clave.trim() == prop.trim()){
+            valorEncontrado = doc.propiedades.propiedad[i].valor;
+            encontro = true;
+        }
+        ++i;
+    }
+    if(valorEncontrado == ""){
+      valorEncontrado = "...";
+    }
+    return valorEncontrado;
+  }
+
+  obtenerNombreArchivo(texto: string): string {
+    let cadena = texto.split(";")[1].split('"')[1].trim();
+    return cadena;
   }
 }

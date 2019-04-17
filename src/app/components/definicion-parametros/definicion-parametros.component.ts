@@ -67,33 +67,15 @@ export class DefinicionParametrosComponent implements OnInit {
   //Eventos
   //Aqui falta lo de la condicion logica
   buscar(){
-    /*this.consulta = new Consulta(
-      ["TipoCliente","IsCurrentVersion","Nombredeldocumento","NumeroIdentificacionCliente",
-  "IsReserved"],
-  "?clave=NombreUsuario&valor=IBMpruebas"
-    )*/
-    let nuevasColumnas = this.columnasAMostrar;/*this.propiedadesCampo.map( p => 
-      {
-        return new Columna(p.nombreSimbolico, p.nombreVisual)
-      });*/
-    //let nuevasColumnas = this.propiedadesCampo.map( p => p.nombreSimbolico).slice(0,5);
-    let nuevaQuery = "?";
-    //&& i < this.propiedadesSeleccionadas.length-1
-    for(let i=0; i< this.propiedadesSeleccionadas.length; i++){
-      if(i > 0 ){
-        nuevaQuery += '&operador=' + 'AND'+ "&";
-      }
-      nuevaQuery += 'clave='+this.propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
-      '&'+'valor='+this.propiedadesSeleccionadas[i].valorCadena;
-    }
+    let nuevasColumnas = this.columnasAMostrar;
+    let nuevaQuery = this.propiedadService.construirQuery(this.propiedadesSeleccionadas);
     this.camposDesabilitado = true;
-    //this.consulta = null;
-    console.log(nuevaQuery);
+    //console.log(nuevaQuery);
     this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
   }
 
   agregarPropiedad(){
-    console.log(this.propiedadNueva);
+    //console.log(this.propiedadNueva);
     this.propiedadesSeleccionadas.push(this.propiedadNueva);
     this.propiedadNueva = new PropiedadSelected;
     this.propiedadNueva.valor = "";
@@ -125,30 +107,10 @@ export class DefinicionParametrosComponent implements OnInit {
     let criteriosInputStr = this.route.snapshot.queryParamMap.get('criterios');
     let operadoresInputStr = this.route.snapshot.queryParamMap.get('operadores');
 
-    
-    let columnasArray = columnasInputStr.split(",");
-    let nuevasColumnasArray = columnasArray.map( c => 
-      {
-        const names = c.split(";");
-        return new Columna(names[0],names[1]);
-      })
+    let nuevasColumnasArray = this.propiedadService.construirColumnas(columnasInputStr);
     //Validar input
     //Ahora los criterios, falta validar
-    let criteriosArray = criteriosInputStr.split(",");
-    let operadoresArray = operadoresInputStr.split(',');
-    
-    let nuevaQuery = "?";
-
-    for (let i = 0; i < criteriosArray.length; i++) {
-      const element = criteriosArray[i].split(";");
-      const llave = element[0];
-      const valor = element[1];
-      if(i > 0 && i < criteriosArray.length-1){
-        nuevaQuery += '&operador=' + operadoresArray[i-1]+ "&";
-      }
-      nuevaQuery += 'clave='+llave+'&'+'valor='+valor;
-
-    }
+    let nuevaQuery = this.propiedadService.construirQueryUrl(criteriosInputStr, operadoresInputStr);
 
     //Toca cambiar
     this.esUrl = true;
@@ -170,6 +132,7 @@ export class DefinicionParametrosComponent implements OnInit {
     propiedadActual.valorDate = new Date;
     propiedadActual.valorNumeric = undefined;
     propiedadActual.valorBoolean = false;
+    propiedadActual.valorOpcion = "";
   }
 
 }
