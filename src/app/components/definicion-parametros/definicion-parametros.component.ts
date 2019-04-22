@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Consulta } from 'src/app/POJOs/Consulta';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { PropiedadSelected } from 'src/app/POJOs/PropiedadSelected';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { OpcionLista } from 'src/app/POJOs/OpcionLista';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -23,7 +24,8 @@ export class DefinicionParametrosComponent implements OnInit {
     private route: ActivatedRoute,
     private propiedadService: PropiedadService,
     iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
+    sanitizer: DomSanitizer,
+    public dialogError: MatDialog
   ) {
     iconRegistry.addSvgIcon(
       'x-icon',
@@ -74,6 +76,8 @@ export class DefinicionParametrosComponent implements OnInit {
       this.camposDesabilitado = true;
       console.log(nuevaQuery);
       this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
+    }else{
+      this.mostrarError("Campos Incompletos", "Complete los datos");
     }
     
   }
@@ -143,6 +147,37 @@ export class DefinicionParametrosComponent implements OnInit {
     propiedadActual.valorOpcion = "";
   }
 
+  mostrarError(title: string, content: string){
+    const myDialogError = this.dialogError.open(DialogError, {
+      width: '30%',
+      height: '40%',
+      data: {title: title, content: content}
+    })
+
+  }
+
+}
+
+@Component({
+  selector: 'dialog-error',
+  templateUrl: 'dialog-error.html',
+})
+
+export class DialogError {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogError>,
+    @Inject(MAT_DIALOG_DATA) public data: ErrorData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface ErrorData {
+  title: string;
+  content: string;
 }
 
 

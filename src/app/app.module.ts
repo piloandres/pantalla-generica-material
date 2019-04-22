@@ -24,10 +24,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 
 import { DialogChoose } from 'src/app/components/documentos/documentos.component';
 import { DialogInfo } from 'src/app/components/documentos/documentos.component';
+import { DialogError } from 'src/app/components/definicion-parametros/definicion-parametros.component';
 
 
 
@@ -37,7 +39,8 @@ import { DialogInfo } from 'src/app/components/documentos/documentos.component';
     DocumentosComponent,
     DefinicionParametrosComponent,
     DialogChoose,
-    DialogInfo
+    DialogInfo,
+    DialogError
   ],
   imports: [
     BrowserModule,
@@ -60,13 +63,15 @@ import { DialogInfo } from 'src/app/components/documentos/documentos.component';
     MatDialogModule,
     MatDividerModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [
     DialogChoose,
-    DialogInfo
+    DialogInfo,
+    DialogError
   ]
 })
 export class AppModule { }
