@@ -129,7 +129,10 @@ export class DocumentosComponent implements OnInit, OnChanges {
     let binaryData = [];
     binaryData.push(data);
     let nameUrl = window.URL.createObjectURL(new Blob(binaryData, {type: tipo}));
-    window.open(nameUrl, "_blank");
+    let win = window.open('www.google.com', '_blank');
+    if(win){
+      win.focus();
+    }
   }
 
   abrirDialog(data: any, tipo: string, nombreArchivo: string): void {

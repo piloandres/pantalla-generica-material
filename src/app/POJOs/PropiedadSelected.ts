@@ -45,7 +45,7 @@ export class PropiedadSelected {
           return (this.valorNumeric+"");
         }else if (tipoActual == "BOOL"){
           return (this.valorBoolean+"");
-        }else if (tipoActual == "LIST"){
+        }else if (tipoActual == "LISTA"){
           return this.valorOpcion;
         }
         return "";

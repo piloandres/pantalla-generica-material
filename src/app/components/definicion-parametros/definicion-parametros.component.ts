@@ -67,6 +67,7 @@ export class DefinicionParametrosComponent implements OnInit {
   //Eventos
   //Aqui falta lo de la condicion logica
   buscar(){
+    this.propiedadesSeleccionadas.map(p => console.log(p));
     let nuevasColumnas = this.columnasAMostrar;
     let nuevaQuery = this.propiedadService.construirQuery(this.propiedadesSeleccionadas);
     if(nuevaQuery != undefined){
@@ -78,7 +79,6 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   agregarPropiedad(){
-    //console.log(this.propiedadNueva);
     this.propiedadesSeleccionadas.push(this.propiedadNueva);
     this.propiedadNueva = new PropiedadSelected;
     this.propiedadNueva.valor = "";
@@ -136,7 +136,6 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   limpiarInput(propiedadActual: PropiedadSelected){
-    //console.log("entro a limpiar input");
     propiedadActual.valor = "";
     propiedadActual.valorDate = new Date;
     propiedadActual.valorNumeric = undefined;
