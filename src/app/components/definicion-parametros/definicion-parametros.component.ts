@@ -69,9 +69,18 @@ export class DefinicionParametrosComponent implements OnInit {
   //Eventos
   //Aqui falta lo de la condicion logica
   buscar(){
-    this.propiedadesSeleccionadas.map(p => console.log(p));
+    //this.propiedadesSeleccionadas.map(p => console.log(p));
     let nuevasColumnas = this.columnasAMostrar;
-    let nuevaQuery = this.propiedadService.construirQuery(this.propiedadesSeleccionadas);
+
+    let propiedadTaxonomia = new PropiedadSelected;
+    propiedadTaxonomia.propiedad.tipo = "STRING";
+    propiedadTaxonomia.valor = this.selectedCampo;
+    propiedadTaxonomia.propiedad.nombreSimbolico = "taxonomia";
+    propiedadTaxonomia.propiedad.nombreVisual = "taxonomia";
+    let propiedadesConTaxonomia = this.propiedadesSeleccionadas.slice();
+    propiedadesConTaxonomia.push(propiedadTaxonomia);
+    
+    let nuevaQuery = this.propiedadService.construirQuery(propiedadesConTaxonomia);
     if(nuevaQuery != undefined){
       this.camposDesabilitado = true;
       console.log(nuevaQuery);
