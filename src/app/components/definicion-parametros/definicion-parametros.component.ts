@@ -89,24 +89,25 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   actualizarParametros(){
-    this.propiedadService.obtenerParametrosPorClase(this.selectedCampo)
+    let selectedCampoTemp = this.selectedCampo;
+    this.propiedadesCampo = [];
+    this.propiedadesSeleccionadas = [];
+    this.propiedadNueva.valor ="";
+    this.consulta = undefined;
+    this.propiedadService.obtenerParametrosPorClase(selectedCampoTemp)
     .subscribe( p => 
       {
-        this.propiedadesSeleccionadas = [];
         this.propiedadesCampo = p;
-        this.propiedadNueva.valor ="";
       },
       error => {
-        this.propiedadesSeleccionadas = [];
-        this.propiedadesCampo = [];
-        this.propiedadNueva.valor ="";
-        console.log("Aqui se debe mostrar el error en la interfaz de usuario")
+        this.mostrarError("Error al cargar propiedades", "No se han obtenido las propiedades");
+        //console.log("Aqui se debe mostrar el error en la interfaz de usuario");
       }
       );
   }
 
   //Private
-  //TODO: Faltan validaciones y delegarlo a un service
+  //TODO: Faltan validaciones
   obtenerInputs(){
 
     if(!this.route.snapshot.queryParamMap.has('columnas')
@@ -114,6 +115,7 @@ export class DefinicionParametrosComponent implements OnInit {
       || !this.route.snapshot.queryParamMap.has('operadores'))
       {
         this.esUrl = false;
+        //this.mostrarError("Faltan parametros", "Faltan campos en la url (columnas, criterios, operadores)");
         return;
       }
     let columnasInputStr = this.route.snapshot.queryParamMap.get('columnas');
@@ -150,7 +152,6 @@ export class DefinicionParametrosComponent implements OnInit {
   mostrarError(title: string, content: string){
     const myDialogError = this.dialogError.open(DialogError, {
       width: '30%',
-      height: '40%',
       data: {title: title, content: content}
     })
 
@@ -161,6 +162,7 @@ export class DefinicionParametrosComponent implements OnInit {
 @Component({
   selector: 'dialog-error',
   templateUrl: 'dialog-error.html',
+  styleUrls: ['dialog-error.css']
 })
 
 export class DialogError {
