@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Columna } from 'src/app/POJOs/Columna';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EventEmitter } from '@angular/core';
+import { DialogError } from '../definicion-parametros/definicion-parametros.component';
 
 @Component({
   selector: 'app-documentos',
@@ -87,6 +88,7 @@ export class DocumentosComponent implements OnInit, OnChanges {
         this.dataSource.paginator = this.paginator;
         this.table.renderRows();
         this.dataSource.sort = this.sort;
+        this.mostrarError("Error al buscar documentos","No se puso realizar la comunicacion con el servidor");
         console.log("Aquí se deberia mostrar un error en pantalla")
       });
   }
@@ -106,6 +108,7 @@ export class DocumentosComponent implements OnInit, OnChanges {
         this.abrirDialog(r.body,r.headers.get('Content-Type'),nomArchivo);
       },
       error =>{
+        this.mostrarError("Error al obtener archivo","No se puso realizar la comunicacion con el servidor");
         console.log("Aqui se debe mostrar error en pantalla")
       });
   }
@@ -166,6 +169,14 @@ export class DocumentosComponent implements OnInit, OnChanges {
     error =>{
       console.log("Aqui se debe mostrar el error en la interfaz de usuario")
     })
+  }
+
+  mostrarError(title: string, content: string){
+    const myDialogError = this.dialog.open(DialogError, {
+      width: '30%',
+      data: {title: title, content: content}
+    })
+
   }
 
 }

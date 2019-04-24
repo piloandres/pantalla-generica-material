@@ -79,7 +79,7 @@ export class DefinicionParametrosComponent implements OnInit {
     propiedadTaxonomia.propiedad.nombreVisual = "taxonomia";
     let propiedadesConTaxonomia = this.propiedadesSeleccionadas.slice();
     propiedadesConTaxonomia.push(propiedadTaxonomia);
-    
+
     let nuevaQuery = this.propiedadService.construirQuery(propiedadesConTaxonomia);
     if(nuevaQuery != undefined){
       this.camposDesabilitado = true;
@@ -158,7 +158,7 @@ export class DefinicionParametrosComponent implements OnInit {
     propiedadActual.valorOpcion = "";
   }
 
-  mostrarError(title: string, content: string){
+  protected mostrarError(title: string, content: string){
     const myDialogError = this.dialogError.open(DialogError, {
       width: '30%',
       data: {title: title, content: content}
