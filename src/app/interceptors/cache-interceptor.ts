@@ -9,9 +9,11 @@ export class CacheInterceptor implements HttpInterceptor {
 
     constructor(private cache: MyCacheService){}
 
+    //TODO: Insert code to verify whether a request is cachable
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        const cacheResponse = this.cache.get(req);
-        return cacheResponse ? of(cacheResponse) : this.sendRequest(req, next);
+        const cachedResponse = this.cache.get(req);
+        return cachedResponse ? of(cachedResponse) : this.sendRequest(req, next);
     }
 
     private sendRequest(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

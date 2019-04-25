@@ -5,7 +5,8 @@ import { HttpRequest, HttpResponse } from '@angular/common/http';
   providedIn: 'root'
 })
 export class MyCacheService {
-
+  //TODO: Aun se puede mejorar el cache, poniendo un limite de items, definiendo un criterio
+  //de prioridad sobre que elementso deben estar en el cache
   constructor() { }
   deadLine = 30000;
   cache = new Map<string, any>();
