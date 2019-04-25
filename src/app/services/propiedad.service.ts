@@ -3,10 +3,11 @@ import { Observable, of } from 'rxjs';
 import { ValoresConfiguracion } from '../configuration/configuracion';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Definicion } from '../POJOs/Definicion';
-import { map, tap, catchError } from 'rxjs/operators';
+import { map, tap, catchError, retry } from 'rxjs/operators';
 import { ClaseGlobal } from '../POJOs/ClaseGlobal';
 import { PropiedadSelected } from '../POJOs/PropiedadSelected';
 import { Columna } from '../POJOs/Columna';
+import { HttpEvent, HttpRequest, HttpResponse, HttpInterceptor, HttpHandler } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class PropiedadService {
     formData.append("metadata", body);
 
     return this.http.post<ClaseGlobal>(url, formData, httpOptions)
-    .pipe( map(d => d.clase[0].definiciones.definicion), 
+    .pipe( retry(3), map(d => d.clase[0].definiciones.definicion), 
       tap(d => console.log("obtener propiedades")), 
     catchError( this.handleError<any>('obtenerParametrosClase'), ) );
   }

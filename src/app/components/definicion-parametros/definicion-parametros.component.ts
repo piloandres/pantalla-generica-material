@@ -158,7 +158,7 @@ export class DefinicionParametrosComponent implements OnInit {
     propiedadActual.valorOpcion = "";
   }
 
-  protected mostrarError(title: string, content: string){
+  mostrarError(title: string, content: string){
     const myDialogError = this.dialogError.open(DialogError, {
       width: '30%',
       data: {title: title, content: content}
