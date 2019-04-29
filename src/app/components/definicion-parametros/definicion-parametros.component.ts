@@ -12,6 +12,7 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { OpcionLista } from 'src/app/POJOs/OpcionLista';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { StyleSingletonService } from 'src/app/services/style-singleton.service';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -25,7 +26,8 @@ export class DefinicionParametrosComponent implements OnInit {
     private propiedadService: PropiedadService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    public dialogError: MatDialog
+    public dialogError: MatDialog,
+    styleSingletonService: StyleSingletonService
   ) {
     iconRegistry.addSvgIcon(
       'x-icon',
