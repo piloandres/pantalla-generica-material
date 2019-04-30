@@ -5,8 +5,8 @@
     </div>
     <mat-select [disabled]="camposDesabilitado" placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
       (selectionChange)="actualizarParametros()">
-      <mat-option *ngFor="let campo of camposSelector" [value]=campo>
-        {{campo}}
+      <mat-option *ngFor="let campo of camposSelector" [value]="campo">
+        {{campo.nombreVisual}}
       </mat-option>
     </mat-select>
   </mat-card>
@@ -72,7 +72,7 @@
       <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>
 
       <div *ngIf="propiedadesSeleccionadas.length > 0">
-        <button mat-raised-button color="primary" [disabled]="camposDesabilitado" (click)="buscar()" [ngStyle]="{'background-color': '#ff0000'}" >Buscar</button>
+        <button mat-raised-button color="primary" [disabled]="camposDesabilitado" (click)="buscar()" [ngStyle]="{'background-color': obtenerBGColor()}" >Buscar</button>
       </div>
     </mat-card>
   </div>

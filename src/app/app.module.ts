@@ -27,9 +27,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 
-import { DialogChoose } from 'src/app/components/documentos/documentos.component';
-import { DialogInfo } from 'src/app/components/documentos/documentos.component';
-import { DialogError } from 'src/app/components/definicion-parametros/definicion-parametros.component';
+import { DialogChoose } from 'src/app/components/choose-dialog/dialog-choose';
+import { DialogInfo } from 'src/app/components/info-dialog/dialog-info';
+import { DialogError } from 'src/app/components/error-dialog/dialog-error';
 
 
 

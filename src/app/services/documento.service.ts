@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { DocumentoGlobal } from '../POJOs/DocumentoGlobal';
+import { DocumentoGlobal } from '../Models/DocumentoGlobal';
 import { ValoresConfiguracion } from '../configuration/configuracion';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators'
-import { Documento } from '../POJOs/Documento';
+import { Documento } from '../Models/Documento';
 
 @Injectable({
   providedIn: 'root'

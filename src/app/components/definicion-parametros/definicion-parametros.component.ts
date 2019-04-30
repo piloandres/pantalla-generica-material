@@ -1,18 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Consulta } from 'src/app/POJOs/Consulta';
+import { Consulta } from 'src/app/Models/Consulta';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { PropiedadService } from 'src/app/services/propiedad.service';
-import { Definicion } from 'src/app/POJOs/Definicion';
-import { Propiedad } from 'src/app/POJOs/Propiedad';
-import { Columna } from 'src/app/POJOs/Columna';
-import { PropiedadSelected } from 'src/app/POJOs/PropiedadSelected';
+import { Definicion } from 'src/app/Models/Definicion';
+import { Columna } from 'src/app/Models/Columna';
+import { PropiedadSelected } from 'src/app/Models/PropiedadSelected';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { OpcionLista } from 'src/app/POJOs/OpcionLista';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { StyleSingletonService } from 'src/app/services/style-singleton.service';
+import { DialogError } from '../error-dialog/dialog-error';
+import { ClaseVista } from 'src/app/Models/ClaseVista';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -27,7 +25,7 @@ export class DefinicionParametrosComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     public dialogError: MatDialog,
-    styleSingletonService: StyleSingletonService
+    public styleSingletonService: StyleSingletonService
   ) {
     iconRegistry.addSvgIcon(
       'x-icon',
@@ -36,7 +34,7 @@ export class DefinicionParametrosComponent implements OnInit {
   
   esUrl: boolean;
   consulta: Consulta;
-  selectedCampo: string;
+  selectedCampo: ClaseVista;
   camposDesabilitado: boolean = false;
 
   propiedadesCampo: Definicion[] = [];
@@ -47,9 +45,14 @@ export class DefinicionParametrosComponent implements OnInit {
   propiedadNueva: PropiedadSelected = new PropiedadSelected;
   propiedadesSeleccionadas: PropiedadSelected[] = [];
 
-  camposSelector: string[] = [
-    "CD_DocumentoConocimientoCliente",
-    "CD_Poliza"
+  camposSelector: ClaseVista[] = [
+    new ClaseVista("CD_DocumentoIdentificacionCliente","Documento de Identificacion del cliente"),
+    new ClaseVista("CD_DocumentoConocimientoCliente","Conocimiento Cliente"),
+    new ClaseVista("CD_Acta","Acta"),
+    new ClaseVista("CD_InformesTecnicos","Informes Tecnicos"),
+    new ClaseVista("CD_InformacionMedica","Informacion Medica"),
+    new ClaseVista("CD_AnexosPoliza","Anexos a la Poliza"),
+    new ClaseVista("CD_SolicitudesModificanNegocio","Solicitudes modifican negocio"),
   ]
 
   columnasAMostrar: Columna[] = [
@@ -64,6 +67,7 @@ export class DefinicionParametrosComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.styleSingletonService.backgroundColor = "#ffeb3b";
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
   }
@@ -76,7 +80,7 @@ export class DefinicionParametrosComponent implements OnInit {
 
     let propiedadTaxonomia = new PropiedadSelected;
     propiedadTaxonomia.propiedad.tipo = "STRING";
-    propiedadTaxonomia.valor = this.selectedCampo;
+    propiedadTaxonomia.valor = this.selectedCampo.nombreSimbolico;
     propiedadTaxonomia.propiedad.nombreSimbolico = "taxonomia";
     propiedadTaxonomia.propiedad.nombreVisual = "taxonomia";
     let propiedadesConTaxonomia = this.propiedadesSeleccionadas.slice();
@@ -100,7 +104,7 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   actualizarParametros(){
-    let selectedCampoTemp = this.selectedCampo;
+    let selectedCampoTemp = this.selectedCampo.nombreSimbolico;
     this.propiedadesCampo = [];
     this.propiedadesSeleccionadas = [];
     this.propiedadNueva.valor ="";
@@ -168,29 +172,10 @@ export class DefinicionParametrosComponent implements OnInit {
 
   }
 
-}
-
-@Component({
-  selector: 'dialog-error',
-  templateUrl: 'dialog-error.html',
-  styleUrls: ['dialog-error.css']
-})
-
-export class DialogError {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogError>,
-    @Inject(MAT_DIALOG_DATA) public data: ErrorData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
+  obtenerBGColor(): string{
+    return this.styleSingletonService.getBackGroundColor();
   }
 
-}
-
-export interface ErrorData {
-  title: string;
-  content: string;
 }
 
 

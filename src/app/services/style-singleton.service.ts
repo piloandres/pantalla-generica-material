@@ -7,7 +7,7 @@ export class StyleSingletonService {
 
   constructor() { }
   
-  backgroundColor: string = "#795548";
+  backgroundColor: string = "#4caf50";
   color: string = "#fafafa";
 
   setColors(bgColor: string, lColor: string){

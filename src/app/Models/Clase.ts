@@ -1,4 +1,3 @@
-import { Definicion } from './Definicion';
 import { DefinicionGlobal } from './DefinicionGlobal';
 
 export class Clase{

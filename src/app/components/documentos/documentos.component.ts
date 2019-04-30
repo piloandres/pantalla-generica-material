@@ -1,15 +1,17 @@
 import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges, Inject, Output, OnDestroy } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
-import { Documento } from '../../POJOs/Documento';
+import { Documento } from '../../Models/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { MatTable, MatSort } from '@angular/material'
-import { Consulta } from 'src/app/POJOs/Consulta';
+import { Consulta } from 'src/app/Models/Consulta';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Columna } from 'src/app/POJOs/Columna';
+import { Columna } from 'src/app/Models/Columna';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EventEmitter } from '@angular/core';
-import { DialogError } from '../definicion-parametros/definicion-parametros.component';
+import { DialogError } from '../error-dialog/dialog-error';
+import { DialogInfo } from '../info-dialog/dialog-info';
+import { DialogChoose } from '../choose-dialog/dialog-choose';
 
 @Component({
   selector: 'app-documentos',
@@ -179,51 +181,6 @@ export class DocumentosComponent implements OnInit, OnChanges {
 
   }
 
-}
-
-@Component({
-  selector: 'dialog-choose',
-  templateUrl: 'dialog-choose.html',
-})
-
-export class DialogChoose {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogChoose>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-export interface DialogData {
-  info: string;
-  respuesta: string;
-}
-
-
-@Component({
-  selector: 'dialog-info',
-  templateUrl: 'dialog-info.html',
-  styleUrls: ['dialog-info.css']
-})
-
-export class DialogInfo {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogInfo>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogInfoData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-export interface DialogInfoData{
-  documentoInfo: Documento;
 }
 
 export const extensionesPorArchivo: { [key: string]: string } = {
