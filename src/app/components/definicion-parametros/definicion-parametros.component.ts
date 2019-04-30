@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Consulta } from 'src/app/Models/Consulta';
 import { ActivatedRoute } from '@angular/router';
 import { PropiedadService } from 'src/app/services/propiedad.service';
@@ -108,6 +108,7 @@ export class DefinicionParametrosComponent implements OnInit {
     this.propiedadesCampo = [];
     this.propiedadesSeleccionadas = [];
     this.propiedadNueva.valor ="";
+    this.propiedadNueva = new PropiedadSelected;
     this.consulta = undefined;
     this.propiedadService.obtenerParametrosPorClase(selectedCampoTemp)
     .subscribe( p => 

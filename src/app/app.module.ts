@@ -8,7 +8,7 @@ import { DocumentosComponent } from './components/documentos/documentos.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
@@ -30,6 +30,8 @@ import { DatePipe } from '@angular/common';
 import { DialogChoose } from 'src/app/components/choose-dialog/dialog-choose';
 import { DialogInfo } from 'src/app/components/info-dialog/dialog-info';
 import { DialogError } from 'src/app/components/error-dialog/dialog-error';
+
+import { getSpanishPaginatorIntl } from './configuration/spanish-paginator-traslate';
 
 
 
@@ -66,7 +68,9 @@ import { DialogError } from 'src/app/components/error-dialog/dialog-error';
     ReactiveFormsModule,
     MatSnackBarModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     DialogChoose,

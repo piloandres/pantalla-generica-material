@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ValoresConfiguracion } from '../configuration/configuracion';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Definicion } from '../POJOs/Definicion';
+import { Definicion } from '../Models/Definicion';
 import { map, tap, catchError, retry } from 'rxjs/operators';
-import { ClaseGlobal } from '../POJOs/ClaseGlobal';
-import { PropiedadSelected } from '../POJOs/PropiedadSelected';
-import { Columna } from '../POJOs/Columna';
-import { HttpEvent, HttpRequest, HttpResponse, HttpInterceptor, HttpHandler } from '@angular/common/http';
+import { ClaseGlobal } from '../Models/ClaseGlobal';
+import { PropiedadSelected } from '../Models/PropiedadSelected';
+import { Columna } from '../Models/Columna';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,7 @@ export class PropiedadService {
       }),
       mimeType: 'multipart/form-data',
       data: 'form',
-    }
+  }
 
     //Validar inyeccion de codigo
     let formData = new FormData();

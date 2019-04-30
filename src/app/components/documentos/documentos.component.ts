@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChange, SimpleChanges, Inject, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnChanges, SimpleChanges, Output } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Documento } from '../../Models/Documento';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -7,7 +7,7 @@ import { Consulta } from 'src/app/Models/Consulta';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Columna } from 'src/app/Models/Columna';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { EventEmitter } from '@angular/core';
 import { DialogError } from '../error-dialog/dialog-error';
 import { DialogInfo } from '../info-dialog/dialog-info';
