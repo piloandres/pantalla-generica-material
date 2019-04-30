@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { DefinicionParametrosComponent } from './components/definicion-parametros/definicion-parametros.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -32,6 +32,8 @@ import { DialogInfo } from 'src/app/components/info-dialog/dialog-info';
 import { DialogError } from 'src/app/components/error-dialog/dialog-error';
 
 import { getSpanishPaginatorIntl } from './configuration/spanish-paginator-traslate';
+
+import { CacheInterceptor } from './interceptors/cache-interceptor';
 
 
 
@@ -68,7 +70,8 @@ import { getSpanishPaginatorIntl } from './configuration/spanish-paginator-trasl
     ReactiveFormsModule,
     MatSnackBarModule
   ],
-  providers: [DatePipe,
+  providers: [
+    DatePipe,
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
   ],
   bootstrap: [AppComponent],

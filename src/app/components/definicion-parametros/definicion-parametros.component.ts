@@ -52,7 +52,7 @@ export class DefinicionParametrosComponent implements OnInit {
     new ClaseVista("CD_InformesTecnicos","Informes Tecnicos"),
     new ClaseVista("CD_InformacionMedica","Informacion Medica"),
     new ClaseVista("CD_AnexosPoliza","Anexos a la Poliza"),
-    new ClaseVista("CD_SolicitudesModificanNegocio","Solicitudes modifican negocio"),
+    new ClaseVista("CD_SolicitudesModificanNegocio","Solicitudes modifican negocio")
   ]
 
   columnasAMostrar: Columna[] = [
