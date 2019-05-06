@@ -72,8 +72,9 @@
       <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>
 
       <div *ngIf="propiedadesSeleccionadas.length > 0">
-        <button mat-raised-button color="primary" [disabled]="camposDesabilitado" (click)="buscar()" [ngStyle]="{'background-color': obtenerBGColor()}" >Buscar</button>
+        <button id="prueba1" mat-raised-button [disabled]="camposDesabilitado" (click)="buscar()" >Buscar</button>
       </div>
+      <button mat-raised-button (click)="agregarEstilos()">Change</button>
     </mat-card>
   </div>
 </div>

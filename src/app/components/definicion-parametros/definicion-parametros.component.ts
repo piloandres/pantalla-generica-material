@@ -177,6 +177,18 @@ export class DefinicionParametrosComponent implements OnInit {
     return this.styleSingletonService.getBackGroundColor();
   }
 
+  agregarEstilos(): void {
+    console.log("get in estilos")
+    let nodoHead = document.getElementsByTagName('head')[0];
+
+    let nodoLink = document.createElement('link');
+    nodoLink.href = 'https://estilospantallagenerica.000webhostapp.com/prueba.css';
+    nodoLink.type = 'text/css';
+    nodoLink.rel = 'stylesheet';
+    
+    nodoHead.appendChild(nodoLink);
+  }
+
 }
 
 
