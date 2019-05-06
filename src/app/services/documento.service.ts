@@ -5,6 +5,7 @@ import { ValoresConfiguracion } from '../configuration/configuracion';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators'
 import { Documento } from '../Models/Documento';
+import { PropiedadSelected } from '../Models/PropiedadSelected';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +19,11 @@ export class DocumentoService {
   private valoresConfiguracion = ValoresConfiguracion;
 
   //TODO: Manejo de log
-  obtenerDocumentos(queryTxt: string): Observable<DocumentoGlobal>{
+  obtenerDocumentos(criterios: PropiedadSelected[]): Observable<DocumentoGlobal>{
     //TODO: Esta función debe modificarse para que haga la consulta con varios criterios
     //Por ahora se pone la query, hasta no saber el formato
-    let urlQuery = (this.valoresConfiguracion.uriDocumentos 
-      + queryTxt);
-
-      //urlQuery = "http://10.1.3.68:9081/SBServiciosFilenetREST/rest/servicios-documentales/documentos?clave=NombreUsuario&valor=IBMpruebas";
+    let queryTxt = this.construirQuery(criterios);
+    let urlQuery = `${this.valoresConfiguracion.uriDocumentos}?${queryTxt}`;
     
     const httpOptions = {
       headers: new HttpHeaders({
@@ -36,6 +35,22 @@ export class DocumentoService {
     .pipe( tap( d => console.log("obtencion de documentos") ),
     catchError( this.handleError<any>('obtenerDocumentos'))
     );
+  }
+
+  private construirQuery(propiedadesSeleccionadas: PropiedadSelected[]): string{
+    let nuevaQuery = "";
+    //&& i < this.propiedadesSeleccionadas.length-1
+    for(let i=0; i< propiedadesSeleccionadas.length; i++){
+      if(propiedadesSeleccionadas[i].valorCadena == "" || !propiedadesSeleccionadas[i].propiedad.nombreSimbolico){
+        return undefined;
+      }
+      if(i > 0 ){
+        nuevaQuery += '&operador=' + 'AND'+ "&";
+      }
+      nuevaQuery += 'clave='+propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
+      '&'+'valor='+propiedadesSeleccionadas[i].valorCadena;
+    }
+    return nuevaQuery;
   }
 
   obtenerArchivoPorDocumento(id: string): Observable<any>{

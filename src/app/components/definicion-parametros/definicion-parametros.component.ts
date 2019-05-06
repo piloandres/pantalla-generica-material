@@ -8,7 +8,6 @@ import { PropiedadSelected } from 'src/app/Models/PropiedadSelected';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material';
-import { StyleSingletonService } from 'src/app/services/style-singleton.service';
 import { DialogError } from '../error-dialog/dialog-error';
 import { ClaseVista } from 'src/app/Models/ClaseVista';
 
@@ -24,8 +23,7 @@ export class DefinicionParametrosComponent implements OnInit {
     private propiedadService: PropiedadService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    public dialogError: MatDialog,
-    public styleSingletonService: StyleSingletonService
+    public dialogError: MatDialog
   ) {
     iconRegistry.addSvgIcon(
       'x-icon',
@@ -67,49 +65,56 @@ export class DefinicionParametrosComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.styleSingletonService.backgroundColor = "#ffeb3b";
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
   }
 
+  private agregarEstilos(url: string): void {
+    let nodoHead = document.getElementsByTagName('head')[0];
+
+    let nodoLink = document.createElement('link');
+    nodoLink.href = 'https://estilospantallagenerica.000webhostapp.com/prueba.css';
+    nodoLink.type = 'text/css';
+    nodoLink.rel = 'stylesheet';
+    
+    nodoHead.appendChild(nodoLink);
+  }
+
+  private buscar(columnas: Columna[], criterios: PropiedadSelected[]) {
+
+    //Validar campos antes de hacer el cambio
+    this.camposDesabilitado = true;
+    this.consulta = new Consulta(columnas, criterios);
+    
+  }
+
   //Eventos
   //Aqui falta lo de la condicion logica
-  buscar(){
-    //this.propiedadesSeleccionadas.map(p => console.log(p));
-    let nuevasColumnas = this.columnasAMostrar;
 
+  buscarPorCriterios() {
+    let columnasTabla =  { ...this.columnasAMostrar };
+    
     let propiedadTaxonomia = new PropiedadSelected;
     propiedadTaxonomia.propiedad.tipo = "STRING";
     propiedadTaxonomia.valor = this.selectedCampo.nombreSimbolico;
     propiedadTaxonomia.propiedad.nombreSimbolico = "taxonomia";
     propiedadTaxonomia.propiedad.nombreVisual = "taxonomia";
-    let propiedadesConTaxonomia = this.propiedadesSeleccionadas.slice();
-    propiedadesConTaxonomia.push(propiedadTaxonomia);
 
-    let nuevaQuery = this.propiedadService.construirQuery(propiedadesConTaxonomia);
-    if(nuevaQuery != undefined){
-      this.camposDesabilitado = true;
-      console.log(nuevaQuery);
-      this.consulta = new Consulta(nuevasColumnas, nuevaQuery);
-    }else{
-      this.mostrarError("Campos Incompletos", "Complete los datos");
-    }
-    
+    let propiedadesConTaxonomia = [propiedadTaxonomia, ...this.propiedadesSeleccionadas];
+
+    this.buscar(columnasTabla, propiedadesConTaxonomia);
   }
 
   agregarPropiedad(){
-    this.propiedadesSeleccionadas.push(this.propiedadNueva);
+    this.propiedadesSeleccionadas =  [...this.propiedadesSeleccionadas, this.propiedadNueva]
+    //this.propiedadesSeleccionadas.push(this.propiedadNueva);
     this.propiedadNueva = new PropiedadSelected;
     this.propiedadNueva.valor = "";
   }
 
   actualizarParametros(){
     let selectedCampoTemp = this.selectedCampo.nombreSimbolico;
-    this.propiedadesCampo = [];
-    this.propiedadesSeleccionadas = [];
-    this.propiedadNueva.valor ="";
-    this.propiedadNueva = new PropiedadSelected;
-    this.consulta = undefined;
+    this.limpiarCampos();
     this.propiedadService.obtenerParametrosPorClase(selectedCampoTemp)
     .subscribe( p => 
       {
@@ -117,9 +122,16 @@ export class DefinicionParametrosComponent implements OnInit {
       },
       error => {
         this.mostrarError("Error al cargar propiedades", "No se han obtenido las propiedades");
-        //console.log("Aqui se debe mostrar el error en la interfaz de usuario");
       }
       );
+  }
+
+  private limpiarCampos() {
+    this.propiedadesCampo = [];
+    this.propiedadesSeleccionadas = [];
+    this.propiedadNueva.valor ="";
+    this.propiedadNueva = new PropiedadSelected;
+    this.consulta = undefined;
   }
 
   //Private
@@ -141,11 +153,11 @@ export class DefinicionParametrosComponent implements OnInit {
     let nuevasColumnasArray = this.propiedadService.construirColumnas(columnasInputStr);
     //Validar input
     //Ahora los criterios, falta validar
-    let nuevaQuery = this.propiedadService.construirQueryUrl(criteriosInputStr, operadoresInputStr);
+    let nuevosCriterios = this.propiedadService.construirCriterios(criteriosInputStr);
 
     //Toca cambiar
     this.esUrl = true;
-    this.consulta = new Consulta(nuevasColumnasArray, nuevaQuery);
+    this.consulta = new Consulta(nuevasColumnasArray, nuevosCriterios);
 
   }
 
@@ -171,22 +183,6 @@ export class DefinicionParametrosComponent implements OnInit {
       data: {title: title, content: content}
     })
 
-  }
-
-  obtenerBGColor(): string{
-    return this.styleSingletonService.getBackGroundColor();
-  }
-
-  agregarEstilos(): void {
-    console.log("get in estilos")
-    let nodoHead = document.getElementsByTagName('head')[0];
-
-    let nodoLink = document.createElement('link');
-    nodoLink.href = 'https://estilospantallagenerica.000webhostapp.com/prueba.css';
-    nodoLink.type = 'text/css';
-    nodoLink.rel = 'stylesheet';
-    
-    nodoHead.appendChild(nodoLink);
   }
 
 }

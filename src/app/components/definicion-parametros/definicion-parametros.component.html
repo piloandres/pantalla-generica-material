@@ -13,7 +13,9 @@
 
   <div *ngIf="selectedCampo" id="first-group">
     <mat-card>
+
       <label id="label-cri">Criterios de busqueda</label><br>
+
       <div *ngFor="let prop of propiedadesSeleccionadas; let i = index">
         <mat-form-field class="param-line">
           <mat-select class="input-col" (selectionChange)="limpiarInput(prop)" placeholder="propiedad" [(ngModel)]="prop.propiedad" >
@@ -22,14 +24,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        
-        <!--<mat-form-field class="param-line">
-          <mat-select placeholder="condicion" [(value)]="prop.condicion">
-            <mat-option value="igual">
-              igual
-            </mat-option>
-          </mat-select>
-        </mat-form-field>-->
 
         <mat-form-field class="param-line input-valor" >
             <input matInput [(ngModel)]="prop.valor" *ngIf="prop.tipoInput == 'text'" placeholder="valor" type="text" />
@@ -42,13 +36,14 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+
         <div class="param-line">
           <button mat-icon-button (click)="eliminarPorpSeleccionada(i)">
               <mat-icon svgIcon="x-icon"></mat-icon>
           </button>
         </div>
-
       </div>
+
       <mat-form-field class="param-line">
         <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad" (selectionChange)="limpiarInput(propiedadNueva)" >
           <mat-option *ngFor="let miPropiedad of propiedadesCampo" [value]="miPropiedad">
@@ -72,7 +67,7 @@
       <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>
 
       <div *ngIf="propiedadesSeleccionadas.length > 0">
-        <button id="prueba1" mat-raised-button [disabled]="camposDesabilitado" (click)="buscar()" >Buscar</button>
+        <button id="prueba1" mat-raised-button [disabled]="camposDesabilitado" (click)="buscarPorCriterios()" >Buscar</button>
       </div>
       <button mat-raised-button (click)="agregarEstilos()">Change</button>
     </mat-card>

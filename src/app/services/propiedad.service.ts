@@ -44,40 +44,31 @@ export class PropiedadService {
     }
   }
 
-  construirQuery(propiedadesSeleccionadas: PropiedadSelected[]): string{
-    let nuevaQuery = "?";
-    //&& i < this.propiedadesSeleccionadas.length-1
-    for(let i=0; i< propiedadesSeleccionadas.length; i++){
-      if(propiedadesSeleccionadas[i].valorCadena == "" || !propiedadesSeleccionadas[i].propiedad.nombreSimbolico){
-        return undefined;
-      }
-      if(i > 0 ){
-        nuevaQuery += '&operador=' + 'AND'+ "&";
-      }
-      nuevaQuery += 'clave='+propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
-      '&'+'valor='+propiedadesSeleccionadas[i].valorCadena;
-    }
-    return nuevaQuery;
-  }
-
-  construirQueryUrl(criteriosInputStr: string, operadoresInputStr: string): string{
+  construirCriterios(criteriosInputStr: string): PropiedadSelected[]{
+    let criteriosResultado = []
     let criteriosArray = criteriosInputStr.split(",");
-    let operadoresArray = operadoresInputStr.split(',');
-    
-    let nuevaQuery = "?";
 
     for (let i = 0; i < criteriosArray.length; i++) {
       const element = criteriosArray[i].split(";");
       const llave = element[0];
       const valor = element[1];
-      if(i > 0 && i < criteriosArray.length-1){
-        nuevaQuery += '&operador=' + operadoresArray[i-1]+ "&";
+      let nuevaPropiedad = new Definicion;
+
+      nuevaPropiedad = { ...nuevaPropiedad, 
+        tipo: "STRING",
+        nombreSimbolico: llave,
+        nombreVisual: llave 
       }
-      nuevaQuery += 'clave='+llave+'&'+'valor='+valor;
+
+      let nuevoCriterio = new PropiedadSelected;
+      nuevoCriterio.propiedad = nuevaPropiedad;
+      nuevoCriterio.valor = valor;
+
+      criteriosResultado = [...criteriosResultado, nuevoCriterio];
 
     }
 
-    return nuevaQuery;
+    return criteriosResultado;
   }
 
   construirColumnas(columnasInputStr: string): Columna[]{

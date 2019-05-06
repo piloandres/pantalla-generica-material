@@ -58,41 +58,42 @@ export class DocumentosComponent implements OnInit, OnChanges {
   }
 
   updateView(){
-    this.documentos = [];
-    this.dataSource = new MatTableDataSource<Documento>(this.documentos);
+    this.limpiarTabla();
     this.columnas = this.consulta.parametros;
     let columnasDeseadas = this.columnas.map( c => c.nombreSimbolico);
-    columnasDeseadas.push('details');
-    columnasDeseadas.push('ver');
-    this.columnasAMostrar = columnasDeseadas;
+    this.columnasAMostrar = [...columnasDeseadas, 'details', 'ver'];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.obtenerDocumentos();
   }
 
+  limpiarTabla(){
+    this.documentos = [];
+    this.dataSource = new MatTableDataSource<Documento>(this.documentos);
+  }
+
+  //Validar consulta undefined
   obtenerDocumentos(){
     this.isLoading = true;
-    this.documentoService.obtenerDocumentos(this.consulta.queryUrl)
+    this.documentoService.obtenerDocumentos(this.consulta.criterios)
     .subscribe( documentoDTO => 
       {
-        this.onCargado.emit();
         this.documentos = documentoDTO.documento;
-        this.isLoading = false;
-        this.dataSource = new MatTableDataSource<Documento>(this.documentos);
-        this.dataSource.paginator = this.paginator;
-        this.table.renderRows();
-        this.dataSource.sort = this.sort;
+        this.updateTable();
       }, error => {
-        this.onCargado.emit();
-        this.isLoading = false;
         this.documentos = [];
-        this.dataSource = new MatTableDataSource<Documento>(this.documentos);
-        this.dataSource.paginator = this.paginator;
-        this.table.renderRows();
-        this.dataSource.sort = this.sort;
+        this.updateTable();
         this.mostrarError("Error al buscar documentos","No se puso realizar la comunicacion con el servidor");
-        console.log("Aquí se deberia mostrar un error en pantalla")
       });
+  }
+
+  private updateTable(){
+    this.isLoading = false;
+    this.dataSource = new MatTableDataSource<Documento>(this.documentos);
+    this.dataSource.paginator = this.paginator;
+    this.table.renderRows();
+    this.dataSource.sort = this.sort;
+    this.onCargado.emit();
   }
 
   //Eventos
