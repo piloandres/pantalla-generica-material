@@ -78,9 +78,10 @@ export class DefinicionParametrosComponent implements OnInit {
 
   reciveMessage(e: any): void {
     //Validar origen
-    if(this.onlyOnce){
-      this.agregarEstilos('https://estilospantallagenerica.000webhostapp.com/prueba.css');
-      this.onlyOnce = false;
+    console.log(e.data)
+    if(e.data.cssUrl){
+      this.agregarEstilos(e.data.cssUrl);
+      //this.onlyOnce = false;
     }
   }
 
@@ -89,7 +90,7 @@ export class DefinicionParametrosComponent implements OnInit {
     let nodoHead = document.getElementsByTagName('head')[0];
 
     let nodoLink = document.createElement('link');
-    nodoLink.href = url;
+    nodoLink.href = `${url}?v=1`;
     nodoLink.type = 'text/css';
     nodoLink.rel = 'stylesheet';
     
@@ -99,8 +100,13 @@ export class DefinicionParametrosComponent implements OnInit {
   private buscar(columnas: Columna[], criterios: PropiedadSelected[]) {
 
     //Validar campos antes de hacer el cambio
-    this.camposDesabilitado = true;
-    this.consulta = new Consulta(columnas, criterios);
+    
+    if(this.propiedadService.validarBusqueda(columnas, criterios) === true){
+      this.camposDesabilitado = true;
+      this.consulta = new Consulta(columnas, criterios);
+    }else{
+      console.log("no son campos validos")
+    }
     
   }
 

@@ -81,4 +81,22 @@ export class PropiedadService {
 
     return nuevasColumnasArray;
   }
+
+  validarBusqueda(columnas: Columna[], criterios: PropiedadSelected[]): boolean {
+    if(criterios.length == 0 || columnas.length == 0){
+      return false;
+    }
+    let i = 0;
+    let valido = true;
+    while( i < criterios.length && valido === true){
+      let criterioActual = criterios[i];
+      if(criterioActual.valorCadena == ""){
+        valido = false;
+      }
+      ++i;
+    }
+
+    return valido; 
+
+  }
 }
