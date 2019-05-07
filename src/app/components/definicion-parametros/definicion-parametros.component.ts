@@ -64,16 +64,32 @@ export class DefinicionParametrosComponent implements OnInit {
     new Columna("MimeType", "Tipo de MIME")
   ];
 
+  onlyOnce: boolean = true;
+
   ngOnInit() {
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
+    this.initEventListener();
+  }
+
+  private initEventListener() {
+    window.addEventListener('message', this.reciveMessage.bind(this));
+  }
+
+  reciveMessage(e: any): void {
+    //Validar origen
+    if(this.onlyOnce){
+      this.agregarEstilos('https://estilospantallagenerica.000webhostapp.com/prueba.css');
+      this.onlyOnce = false;
+    }
   }
 
   private agregarEstilos(url: string): void {
+    console.log(`%c entro a estilos`,'color: orange; font-weight: bold;')
     let nodoHead = document.getElementsByTagName('head')[0];
 
     let nodoLink = document.createElement('link');
-    nodoLink.href = 'https://estilospantallagenerica.000webhostapp.com/prueba.css';
+    nodoLink.href = url;
     nodoLink.type = 'text/css';
     nodoLink.rel = 'stylesheet';
     
@@ -92,7 +108,7 @@ export class DefinicionParametrosComponent implements OnInit {
   //Aqui falta lo de la condicion logica
 
   buscarPorCriterios() {
-    let columnasTabla =  { ...this.columnasAMostrar };
+    let columnasTabla =  [...this.columnasAMostrar]
     
     let propiedadTaxonomia = new PropiedadSelected;
     propiedadTaxonomia.propiedad.tipo = "STRING";
@@ -106,8 +122,8 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   agregarPropiedad(){
-    this.propiedadesSeleccionadas =  [...this.propiedadesSeleccionadas, this.propiedadNueva]
-    //this.propiedadesSeleccionadas.push(this.propiedadNueva);
+    //this.propiedadesSeleccionadas =  [...this.propiedadesSeleccionadas, this.propiedadNueva]
+    this.propiedadesSeleccionadas.push(this.propiedadNueva);
     this.propiedadNueva = new PropiedadSelected;
     this.propiedadNueva.valor = "";
   }

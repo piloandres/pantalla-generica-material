@@ -45,10 +45,10 @@ export class DocumentoService {
         return undefined;
       }
       if(i > 0 ){
-        nuevaQuery += '&operador=' + 'AND'+ "&";
+        nuevaQuery += '&operador=AND&';
       }
-      nuevaQuery += 'clave='+propiedadesSeleccionadas[i].propiedad.nombreSimbolico + 
-      '&'+'valor='+propiedadesSeleccionadas[i].valorCadena;
+      nuevaQuery += 
+      `clave=${propiedadesSeleccionadas[i].propiedad.nombreSimbolico}&valor=${propiedadesSeleccionadas[i].valorCadena}`;
     }
     return nuevaQuery;
   }

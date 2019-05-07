@@ -1,7 +1,7 @@
 <div *ngIf="esUrl==false">
   <mat-card id="first-group">
     <div class="label-f">
-      <label>Clases</label>
+      <label class="mainLabel">Clases</label>
     </div>
     <mat-select [disabled]="camposDesabilitado" placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
       (selectionChange)="actualizarParametros()">
@@ -14,7 +14,7 @@
   <div *ngIf="selectedCampo" id="first-group">
     <mat-card>
 
-      <label id="label-cri">Criterios de busqueda</label><br>
+      <label class="mainLabel" id="label-cri">Criterios de busqueda</label><br>
 
       <div *ngFor="let prop of propiedadesSeleccionadas; let i = index">
         <mat-form-field class="param-line">
@@ -53,7 +53,7 @@
       </mat-form-field>
       
       <mat-form-field class="param-line input-valor" >
-        <input matInput [(ngModel)]="propiedadNueva.valor" *ngIf="propiedadNueva.tipoInput == 'text'" placeholder="valor" type="text" />
+        <input class="pruebaInput" matInput [(ngModel)]="propiedadNueva.valor" *ngIf="propiedadNueva.tipoInput == 'text'" placeholder="valor" type="text" />
         <input matInput [(ngModel)]="propiedadNueva.valorDate" *ngIf="propiedadNueva.tipoInput == 'date'" placeholder="fecha" type="date" />
         <input matInput [(ngModel)]="propiedadNueva.valorNumeric" *ngIf="propiedadNueva.tipoInput == 'number'" placeholder="valor" type="number" />
         <mat-checkbox [(ngModel)]="propiedadNueva.valorBoolean" *ngIf="propiedadNueva.tipoInput == 'checkbox'"></mat-checkbox>
@@ -64,12 +64,11 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-button color="primary" class="param-line" (click)="agregarPropiedad()">agregar</button>
+      <button mat-button class="param-line" (click)="agregarPropiedad()">agregar</button>
 
       <div *ngIf="propiedadesSeleccionadas.length > 0">
         <button id="prueba1" mat-raised-button [disabled]="camposDesabilitado" (click)="buscarPorCriterios()" >Buscar</button>
       </div>
-      <button mat-raised-button (click)="agregarEstilos()">Change</button>
     </mat-card>
   </div>
 </div>

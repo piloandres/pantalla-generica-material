@@ -112,7 +112,6 @@ export class DocumentosComponent implements OnInit, OnChanges {
       },
       error =>{
         this.mostrarError("Error al obtener archivo","No se puso realizar la comunicacion con el servidor");
-        console.log("Aqui se debe mostrar error en pantalla")
       });
   }
 
