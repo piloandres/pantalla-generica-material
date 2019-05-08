@@ -34,6 +34,7 @@ import { DialogError } from 'src/app/components/error-dialog/dialog-error';
 import { getSpanishPaginatorIntl } from './configuration/spanish-paginator-traslate';
 
 import { CacheInterceptor } from './interceptors/cache-interceptor';
+import { InfoSnackbar } from './components/info-snackbar/info-snackbar';
 
 
 
@@ -44,7 +45,8 @@ import { CacheInterceptor } from './interceptors/cache-interceptor';
     DefinicionParametrosComponent,
     DialogChoose,
     DialogInfo,
-    DialogError
+    DialogError,
+    InfoSnackbar
   ],
   imports: [
     BrowserModule,
@@ -68,6 +70,7 @@ import { CacheInterceptor } from './interceptors/cache-interceptor';
     MatDividerModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
     MatSnackBarModule
   ],
   providers: [
@@ -78,7 +81,8 @@ import { CacheInterceptor } from './interceptors/cache-interceptor';
   entryComponents: [
     DialogChoose,
     DialogInfo,
-    DialogError
+    DialogError,
+    InfoSnackbar
   ]
 })
 export class AppModule { }

@@ -10,6 +10,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material';
 import { DialogError } from '../error-dialog/dialog-error';
 import { ClaseVista } from 'src/app/Models/ClaseVista';
+import { MatSnackBar } from '@angular/material';
+import { InfoSnackbar } from '../info-snackbar/info-snackbar';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -23,7 +25,8 @@ export class DefinicionParametrosComponent implements OnInit {
     private propiedadService: PropiedadService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    public dialogError: MatDialog
+    public dialogError: MatDialog,
+    private infoSnackbar: MatSnackBar
   ) {
     iconRegistry.addSvgIcon(
       'x-icon',
@@ -90,7 +93,9 @@ export class DefinicionParametrosComponent implements OnInit {
     let nodoHead = document.getElementsByTagName('head')[0];
 
     let nodoLink = document.createElement('link');
-    nodoLink.href = `${url}?v=1`;
+
+    let time = new Date();
+    nodoLink.href = `${url}?${time.getTime()}`;
     nodoLink.type = 'text/css';
     nodoLink.rel = 'stylesheet';
     
@@ -105,7 +110,7 @@ export class DefinicionParametrosComponent implements OnInit {
       this.camposDesabilitado = true;
       this.consulta = new Consulta(columnas, criterios);
     }else{
-      console.log("no son campos validos")
+      this.mostrarInformacionSnackbar("Complete los campos vacios");
     }
     
   }
@@ -205,6 +210,14 @@ export class DefinicionParametrosComponent implements OnInit {
       data: {title: title, content: content}
     })
 
+  }
+
+  mostrarInformacionSnackbar(info: string){
+    this.infoSnackbar.openFromComponent(InfoSnackbar, {
+      data: info,
+      duration: 4000,
+      panelClass: ['bolivar-snackbar']
+    })
   }
 
 }
