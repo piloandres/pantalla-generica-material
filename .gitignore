@@ -44,4 +44,4 @@ testem.log
 Thumbs.db
 
 # Variables de configuracion
-/src/app/configuration
+/src/app/configuration/configuracion.ts

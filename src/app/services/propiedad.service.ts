@@ -7,6 +7,7 @@ import { map, tap, catchError, retry } from 'rxjs/operators';
 import { ClaseGlobal } from '../Models/ClaseGlobal';
 import { PropiedadSelected } from '../Models/PropiedadSelected';
 import { Columna } from '../Models/Columna';
+import { timeout } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +29,11 @@ export class PropiedadService {
     //Validar inyeccion de codigo
     let formData = new FormData();
     const body = "{\"clase\":[{\"clasedoc\":\""+clase.trim()+"\"}]}";
+    //const body = `{"clase":[{"clasedoc":"${clase.trim()}"}]}`
     formData.append("metadata", body);
 
     return this.http.post<ClaseGlobal>(url, formData, httpOptions)
-    .pipe( retry(3), map(d => d.clase[0].definiciones.definicion), 
+    .pipe( retry(2), map(d => d.clase[0].definiciones.definicion), 
       tap(d => console.log("obtener propiedades")), 
     catchError( this.handleError<any>('obtenerParametrosClase'), ) );
   }

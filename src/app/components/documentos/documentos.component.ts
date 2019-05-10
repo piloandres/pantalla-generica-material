@@ -63,6 +63,9 @@ export class DocumentosComponent implements OnInit, OnChanges {
     let columnasDeseadas = this.columnas.map( c => c.nombreSimbolico);
     this.columnasAMostrar = [...columnasDeseadas, 'details', 'ver'];
     this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (data, sortId) =>{
+      return this.obtenerValorPropiedad(data, sortId);
+    }
     this.dataSource.paginator = this.paginator;
     this.obtenerDocumentos();
   }
@@ -93,6 +96,9 @@ export class DocumentosComponent implements OnInit, OnChanges {
     this.dataSource.paginator = this.paginator;
     this.table.renderRows();
     this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (data, sortId) =>{
+      return this.obtenerValorPropiedad(data, sortId);
+    }
     this.onCargado.emit();
   }
 

@@ -35,6 +35,7 @@ import { getSpanishPaginatorIntl } from './configuration/spanish-paginator-trasl
 
 import { CacheInterceptor } from './interceptors/cache-interceptor';
 import { InfoSnackbar } from './components/info-snackbar/info-snackbar';
+import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './interceptors/timeout-interceptor';
 
 
 
@@ -75,7 +76,9 @@ import { InfoSnackbar } from './components/info-snackbar/info-snackbar';
   ],
   providers: [
     DatePipe,
-    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
+    { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
+    { provide: DEFAULT_TIMEOUT, useValue: 10000 }
   ],
   bootstrap: [AppComponent],
   entryComponents: [
