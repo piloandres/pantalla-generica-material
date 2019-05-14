@@ -36,6 +36,7 @@ import { getSpanishPaginatorIntl } from './configuration/spanish-paginator-trasl
 import { CacheInterceptor } from './interceptors/cache-interceptor';
 import { InfoSnackbar } from './components/info-snackbar/info-snackbar';
 import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './interceptors/timeout-interceptor';
+import { AccesoComponent } from './components/acceso/acceso.component';
 
 
 
@@ -47,7 +48,8 @@ import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './interceptors/timeout-inte
     DialogChoose,
     DialogInfo,
     DialogError,
-    InfoSnackbar
+    InfoSnackbar,
+    AccesoComponent
   ],
   imports: [
     BrowserModule,

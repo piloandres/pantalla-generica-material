@@ -30,7 +30,6 @@ export class DocumentoService {
         'IP': this.valoresConfiguracion.headerIpDocumentos
       })
     };
-    console.log("obtencion documentos");
     return this.http.get<DocumentoGlobal>(urlQuery, httpOptions)
     .pipe( tap( d => console.log("obtencion de documentos") ),
     catchError( this.handleError<any>('obtenerDocumentos'))

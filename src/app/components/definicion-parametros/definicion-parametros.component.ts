@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Consulta } from 'src/app/Models/Consulta';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PropiedadService } from 'src/app/services/propiedad.service';
 import { Definicion } from 'src/app/Models/Definicion';
 import { Columna } from 'src/app/Models/Columna';
@@ -12,6 +12,8 @@ import { DialogError } from '../error-dialog/dialog-error';
 import { ClaseVista } from 'src/app/Models/ClaseVista';
 import { MatSnackBar } from '@angular/material';
 import { InfoSnackbar } from '../info-snackbar/info-snackbar';
+import { AutenticacionService } from 'src/app/services/autenticacion.service';
+import { Usuario } from 'src/app/models/Usuario';
 
 @Component({
   selector: 'app-definicion-parametros',
@@ -26,7 +28,9 @@ export class DefinicionParametrosComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     public dialogError: MatDialog,
-    private infoSnackbar: MatSnackBar
+    private infoSnackbar: MatSnackBar,
+    private router: Router,
+    private autenticacion: AutenticacionService
   ) {
     iconRegistry.addSvgIcon(
       'x-icon',
@@ -70,6 +74,7 @@ export class DefinicionParametrosComponent implements OnInit {
   onlyOnce: boolean = true;
 
   ngOnInit() {
+    this.autenticar();
     this.propiedadNueva.valor ="";
     this.obtenerInputs();
     this.initEventListener();
@@ -82,10 +87,29 @@ export class DefinicionParametrosComponent implements OnInit {
   reciveMessage(e: any): void {
     //Validar origen
     console.log(e.data)
-    if(e.data.cssUrl){
+    if(e.data.cssUrl && e.data.criterios){
       this.agregarEstilos(e.data.cssUrl);
+      this.generarCriterios(e.data.criterios);
       //this.onlyOnce = false;
     }
+  }
+
+  autenticar(): void {
+    const user = this.route.snapshot.queryParamMap.get('usuario');
+    this.autenticacion.autenticarUsuario(user).subscribe( u => {
+      console.log(u["Usuario"])
+      if( !this.usuarioValido(u) ){
+        this.router.navigate(['/acceso'])
+      }
+    }, err =>{
+      console.log(err)
+      this.router.navigate(['/acceso'])
+    })
+  }
+
+  private usuarioValido(user: Usuario): boolean {
+    //return user["Usuario"].length > 0 ? true : false;
+    return true;
   }
 
   private agregarEstilos(url: string): void {
@@ -100,6 +124,20 @@ export class DefinicionParametrosComponent implements OnInit {
     nodoLink.rel = 'stylesheet';
     
     nodoHead.appendChild(nodoLink);
+  }
+
+  private generarCriterios(criteriosRaw: any[]) {
+    this.esUrl = true;
+    let nuevosCriterios = criteriosRaw.map( r => {
+      let criterioNuevo = new PropiedadSelected;
+      criterioNuevo.propiedad.tipo = "STRING";
+      criterioNuevo.propiedad.nombreSimbolico = r.propiedad;
+      criterioNuevo.propiedad.nombreVisual = r.propiedad;
+      criterioNuevo.valor = r.valor;
+      return criterioNuevo;
+    })
+    let columnasTabla =  [...this.columnasAMostrar];
+    this.buscar(columnasTabla, nuevosCriterios);
   }
 
   private buscar(columnas: Columna[], criterios: PropiedadSelected[]) {
