@@ -5,8 +5,8 @@ import { DefinicionParametrosComponent } from './components/definicion-parametro
 import { AccesoComponent } from './components/acceso/acceso.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/criterios', pathMatch: 'full'},
-  { path: 'criterios', component: DefinicionParametrosComponent },
+  { path: '', redirectTo: '/buscador', pathMatch: 'full'},
+  { path: 'buscador', component: DefinicionParametrosComponent },
   { path: 'acceso', component: AccesoComponent }
 ];
 

@@ -8,6 +8,7 @@ import { ClaseGlobal } from '../Models/ClaseGlobal';
 import { PropiedadSelected } from '../Models/PropiedadSelected';
 import { Columna } from '../Models/Columna';
 import { timeout } from 'q';
+import { ClaseVista } from '../Models/ClaseVista';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,22 @@ import { timeout } from 'q';
 export class PropiedadService {
 
   constructor(private http: HttpClient) { }
+
+  obtenerClasesPorUsuario(id: string): Observable<any> {
+    let aa="asd";
+    let url = `${ValoresConfiguracion.uriClasesPorUsuario}/${id}`;
+    return this.http.get<any>(url).pipe( retry(2), 
+    map((c) => {
+      let clasesRaw = c["Modulos"]["Transaccion"];
+      let clasesPure = clasesRaw.map( cr => {
+        let nombreVisualPure = cr.breadcrumb.replace('/','');
+        return new ClaseVista(cr.transaccion, nombreVisualPure);
+      });
+      return clasesPure;
+    }), 
+    tap(d => console.log("obtener clases por usuario")), 
+  catchError( this.handleError<any>('obtenerClasesPorUsuario') ) )
+  }
 
   obtenerParametrosPorClase(clase: string): Observable<Definicion[]>{
     let url = ValoresConfiguracion.uriPropiedadesClase;
@@ -35,7 +52,7 @@ export class PropiedadService {
     return this.http.post<ClaseGlobal>(url, formData, httpOptions)
     .pipe( retry(2), map(d => d.clase[0].definiciones.definicion), 
       tap(d => console.log("obtener propiedades")), 
-    catchError( this.handleError<any>('obtenerParametrosClase'), ) );
+    catchError( this.handleError<any>('obtenerParametrosClase') ) );
   }
 
   private handleError<T>(operacion, resultado?:T){

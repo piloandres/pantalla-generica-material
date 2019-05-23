@@ -50,15 +50,7 @@ export class DefinicionParametrosComponent implements OnInit {
   propiedadNueva: PropiedadSelected = new PropiedadSelected;
   propiedadesSeleccionadas: PropiedadSelected[] = [];
 
-  camposSelector: ClaseVista[] = [
-    new ClaseVista("CD_DocumentoIdentificacionCliente","Documento de Identificacion del cliente"),
-    new ClaseVista("CD_DocumentoConocimientoCliente","Conocimiento Cliente"),
-    new ClaseVista("CD_Acta","Acta"),
-    new ClaseVista("CD_InformesTecnicos","Informes Tecnicos"),
-    new ClaseVista("CD_InformacionMedica","Informacion Medica"),
-    new ClaseVista("CD_AnexosPoliza","Anexos a la Poliza"),
-    new ClaseVista("CD_SolicitudesModificanNegocio","Solicitudes modifican negocio")
-  ]
+  camposSelector: ClaseVista[];
 
   columnasAMostrar: Columna[] = [
     new Columna("DocumentTitle", "Título del documento"),
@@ -75,9 +67,6 @@ export class DefinicionParametrosComponent implements OnInit {
 
   ngOnInit() {
     this.autenticar();
-    this.propiedadNueva.valor ="";
-    this.obtenerInputs();
-    this.initEventListener();
   }
 
   private initEventListener() {
@@ -85,21 +74,42 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   reciveMessage(e: any): void {
-    //Validar origen
-    console.log(e.data)
-    if(e.data.cssUrl && e.data.criterios){
+    //console.log(e.data)
+    const miCss = e.data.cssUrl;
+    const misCriterios = e.data.criterios;
+    if(miCss){
       this.agregarEstilos(e.data.cssUrl);
-      this.generarCriterios(e.data.criterios);
-      //this.onlyOnce = false;
     }
+    if(misCriterios){
+      this.generarCriterios(e.data.criterios);
+    }
+  }
+
+  llenarCampos(userId: string): void {
+    /*this.camposSelector = [
+      new ClaseVista("CD_DocumentoIdentificacionCliente","Documento de Identificacion del cliente"),
+      new ClaseVista("CD_DocumentoConocimientoCliente","Conocimiento Cliente"),
+      new ClaseVista("CD_Acta","Acta"),
+      new ClaseVista("CD_InformesTecnicos","Informes Tecnicos"),
+      new ClaseVista("CD_InformacionMedica","Informacion Medica"),
+      new ClaseVista("CD_AnexosPoliza","Anexos a la Poliza"),
+      new ClaseVista("CD_SolicitudesModificanNegocio","Solicitudes modifican negocio")
+    ]*/
+    this.propiedadService.obtenerClasesPorUsuario(userId).subscribe( cls => {
+      this.camposSelector = cls;
+    })
   }
 
   autenticar(): void {
     const user = this.route.snapshot.queryParamMap.get('usuario');
     this.autenticacion.autenticarUsuario(user).subscribe( u => {
-      console.log(u["Usuario"])
       if( !this.usuarioValido(u) ){
         this.router.navigate(['/acceso'])
+      }else {
+        this.propiedadNueva.valor ="";
+        this.obtenerInputs();
+        this.initEventListener();
+        this.llenarCampos(user);
       }
     }, err =>{
       console.log(err)
@@ -108,12 +118,13 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   private usuarioValido(user: Usuario): boolean {
-    //return user["Usuario"].length > 0 ? true : false;
-    return true;
+    if(user["Usuario"]["Aplicacion"] == "2269") {
+      return true;
+    }
+    return false;
   }
 
   private agregarEstilos(url: string): void {
-    console.log(`%c entro a estilos`,'color: orange; font-weight: bold;')
     let nodoHead = document.getElementsByTagName('head')[0];
 
     let nodoLink = document.createElement('link');
@@ -141,8 +152,6 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   private buscar(columnas: Columna[], criterios: PropiedadSelected[]) {
-
-    //Validar campos antes de hacer el cambio
     
     if(this.propiedadService.validarBusqueda(columnas, criterios) === true){
       this.camposDesabilitado = true;
@@ -154,7 +163,6 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   //Eventos
-  //Aqui falta lo de la condicion logica
 
   buscarPorCriterios() {
     let columnasTabla =  [...this.columnasAMostrar]
@@ -208,7 +216,6 @@ export class DefinicionParametrosComponent implements OnInit {
       || !this.route.snapshot.queryParamMap.has('operadores'))
       {
         this.esUrl = false;
-        //this.mostrarError("Faltan parametros", "Faltan campos en la url (columnas, criterios, operadores)");
         return;
       }
     let columnasInputStr = this.route.snapshot.queryParamMap.get('columnas');
@@ -216,11 +223,8 @@ export class DefinicionParametrosComponent implements OnInit {
     let operadoresInputStr = this.route.snapshot.queryParamMap.get('operadores');
 
     let nuevasColumnasArray = this.propiedadService.construirColumnas(columnasInputStr);
-    //Validar input
-    //Ahora los criterios, falta validar
     let nuevosCriterios = this.propiedadService.construirCriterios(criteriosInputStr);
 
-    //Toca cambiar
     this.esUrl = true;
     this.consulta = new Consulta(nuevasColumnasArray, nuevosCriterios);
 
