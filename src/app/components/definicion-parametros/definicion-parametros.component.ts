@@ -86,15 +86,6 @@ export class DefinicionParametrosComponent implements OnInit {
   }
 
   llenarCampos(userId: string): void {
-    /*this.camposSelector = [
-      new ClaseVista("CD_DocumentoIdentificacionCliente","Documento de Identificacion del cliente"),
-      new ClaseVista("CD_DocumentoConocimientoCliente","Conocimiento Cliente"),
-      new ClaseVista("CD_Acta","Acta"),
-      new ClaseVista("CD_InformesTecnicos","Informes Tecnicos"),
-      new ClaseVista("CD_InformacionMedica","Informacion Medica"),
-      new ClaseVista("CD_AnexosPoliza","Anexos a la Poliza"),
-      new ClaseVista("CD_SolicitudesModificanNegocio","Solicitudes modifican negocio")
-    ]*/
     this.propiedadService.obtenerClasesPorUsuario(userId).subscribe( cls => {
       this.camposSelector = cls;
     })

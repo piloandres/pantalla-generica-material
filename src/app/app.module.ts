@@ -38,6 +38,8 @@ import { InfoSnackbar } from './components/info-snackbar/info-snackbar';
 import { TimeoutInterceptor, DEFAULT_TIMEOUT } from './interceptors/timeout-interceptor';
 import { AccesoComponent } from './components/acceso/acceso.component';
 
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 
 @NgModule({
@@ -74,7 +76,8 @@ import { AccesoComponent } from './components/acceso/acceso.component';
     MatToolbarModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule
   ],
   providers: [
     DatePipe,

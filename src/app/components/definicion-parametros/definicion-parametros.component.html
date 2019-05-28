@@ -1,77 +1,85 @@
-<div *ngIf="esUrl==false">
-  <mat-card id="first-group">
-    <div class="label-f">
-      <label class="mainLabel">Clases</label>
-    </div>
-    <mat-select [disabled]="camposDesabilitado" placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
-      (selectionChange)="actualizarParametros()">
-      <mat-option *ngFor="let campo of camposSelector" [value]="campo">
-        {{campo.nombreVisual}}
-      </mat-option>
-    </mat-select>
-  </mat-card>
-
-  <div *ngIf="selectedCampo" id="first-group">
-    <mat-card>
-
-      <label class="mainLabel" id="label-cri">Criterios de busqueda</label><br>
-
-      <div *ngFor="let prop of propiedadesSeleccionadas; let i = index">
-        <mat-form-field class="param-line">
-          <mat-select class="input-col" (selectionChange)="limpiarInput(prop)" placeholder="propiedad" [(ngModel)]="prop.propiedad" >
-            <mat-option *ngFor="let propCampo of propiedadesCampo" [value]="propCampo">
-              {{propCampo.nombreVisual}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="param-line input-valor" >
-            <input matInput [(ngModel)]="prop.valor" *ngIf="prop.tipoInput == 'text'" placeholder="valor" type="text" />
-            <input matInput [(ngModel)]="prop.valorDate" *ngIf="prop.tipoInput == 'date'" placeholder="fecha" type="date" />
-            <input matInput [(ngModel)]="prop.valorNumeric" *ngIf="prop.tipoInput == 'number'" placeholder="valor" type="number" />
-            <mat-checkbox [(ngModel)]="prop.valorBoolean" *ngIf="prop.tipoInput == 'checkbox'"></mat-checkbox>
-            <mat-select [(ngModel)]="prop.valorOpcion" *ngIf="prop.tipoInput == 'select'" placeholder="seleccione" >
-                <mat-option *ngFor="let opt of prop.propiedad.lista.opcion" [value]="opt.valorOpcion">
-                  {{opt.nombreOpcion}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <div class="param-line">
-          <button mat-icon-button (click)="eliminarPorpSeleccionada(i)">
-              <mat-icon svgIcon="x-icon"></mat-icon>
-          </button>
+<mat-tab-group>
+  <mat-tab label="Clases">
+    <div *ngIf="esUrl==false">
+      <mat-card id="first-group">
+        <div class="label-f">
+          <label class="mainLabel">Clases</label>
         </div>
-      </div>
-
-      <mat-form-field class="param-line">
-        <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad" (selectionChange)="limpiarInput(propiedadNueva)" >
-          <mat-option *ngFor="let miPropiedad of propiedadesCampo" [value]="miPropiedad">
-            {{miPropiedad.nombreVisual}}
+        <mat-select [disabled]="camposDesabilitado" placeholder="Seleccione la clase" [(ngModel)]="selectedCampo"
+          (selectionChange)="actualizarParametros()">
+          <mat-option *ngFor="let campo of camposSelector" [value]="campo">
+            {{campo.nombreVisual}}
           </mat-option>
         </mat-select>
-      </mat-form-field>
-      
-      <mat-form-field class="param-line input-valor" >
-        <input class="pruebaInput" matInput [(ngModel)]="propiedadNueva.valor" *ngIf="propiedadNueva.tipoInput == 'text'" placeholder="valor" type="text" />
-        <input matInput [(ngModel)]="propiedadNueva.valorDate" *ngIf="propiedadNueva.tipoInput == 'date'" placeholder="fecha" type="date" />
-        <input matInput [(ngModel)]="propiedadNueva.valorNumeric" *ngIf="propiedadNueva.tipoInput == 'number'" placeholder="valor" type="number" />
-        <mat-checkbox [(ngModel)]="propiedadNueva.valorBoolean" *ngIf="propiedadNueva.tipoInput == 'checkbox'"></mat-checkbox>
-        <mat-select [(ngModel)]="propiedadNueva.valorOpcion" *ngIf="propiedadNueva.tipoInput == 'select'" placeholder="seleccione" >
-            <mat-option *ngFor="let opti of propiedadNueva.propiedad.lista.opcion" [value]="opti.valorOpcion">
-              {{opti.nombreOpcion}}
-            </mat-option>
-        </mat-select>
-      </mat-form-field>
+      </mat-card>
 
-      <button mat-button class="param-line" (click)="agregarPropiedad()">agregar</button>
+      <div *ngIf="selectedCampo" id="first-group">
+        <mat-card>
 
-      <div *ngIf="propiedadesSeleccionadas.length > 0">
-        <button id="prueba1" mat-raised-button [disabled]="camposDesabilitado" (click)="buscarPorCriterios()" >Buscar</button>
+          <label class="mainLabel" id="label-cri">Criterios de busqueda</label><br>
+
+          <div *ngFor="let prop of propiedadesSeleccionadas; let i = index">
+            <mat-form-field class="param-line">
+              <mat-select class="input-col" (selectionChange)="limpiarInput(prop)" placeholder="propiedad" [(ngModel)]="prop.propiedad" >
+                <mat-option *ngFor="let propCampo of propiedadesCampo" [value]="propCampo">
+                  {{propCampo.nombreVisual}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="param-line input-valor" >
+                <input matInput [(ngModel)]="prop.valor" *ngIf="prop.tipoInput == 'text'" placeholder="valor" type="text" />
+                <input matInput [(ngModel)]="prop.valorDate" *ngIf="prop.tipoInput == 'date'" placeholder="fecha" type="date" />
+                <input matInput [(ngModel)]="prop.valorNumeric" *ngIf="prop.tipoInput == 'number'" placeholder="valor" type="number" />
+                <mat-checkbox [(ngModel)]="prop.valorBoolean" *ngIf="prop.tipoInput == 'checkbox'"></mat-checkbox>
+                <mat-select [(ngModel)]="prop.valorOpcion" *ngIf="prop.tipoInput == 'select'" placeholder="seleccione" >
+                    <mat-option *ngFor="let opt of prop.propiedad.lista.opcion" [value]="opt.valorOpcion">
+                      {{opt.nombreOpcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="param-line">
+              <button mat-icon-button (click)="eliminarPorpSeleccionada(i)">
+                  <mat-icon svgIcon="x-icon"></mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <mat-form-field class="param-line">
+            <mat-select placeholder="propiedad" [(ngModel)]="propiedadNueva.propiedad" (selectionChange)="limpiarInput(propiedadNueva)" >
+              <mat-option *ngFor="let miPropiedad of propiedadesCampo" [value]="miPropiedad">
+                {{miPropiedad.nombreVisual}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field class="param-line input-valor" >
+            <input class="pruebaInput" matInput [(ngModel)]="propiedadNueva.valor" *ngIf="propiedadNueva.tipoInput == 'text'" placeholder="valor" type="text" />
+            <input matInput [(ngModel)]="propiedadNueva.valorDate" *ngIf="propiedadNueva.tipoInput == 'date'" placeholder="fecha" type="date" />
+            <input matInput [(ngModel)]="propiedadNueva.valorNumeric" *ngIf="propiedadNueva.tipoInput == 'number'" placeholder="valor" type="number" />
+            <mat-checkbox [(ngModel)]="propiedadNueva.valorBoolean" *ngIf="propiedadNueva.tipoInput == 'checkbox'"></mat-checkbox>
+            <mat-select [(ngModel)]="propiedadNueva.valorOpcion" *ngIf="propiedadNueva.tipoInput == 'select'" placeholder="seleccione" >
+                <mat-option *ngFor="let opti of propiedadNueva.propiedad.lista.opcion" [value]="opti.valorOpcion">
+                  {{opti.nombreOpcion}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-button class="param-line" (click)="agregarPropiedad()">agregar</button>
+
+          <div *ngIf="propiedadesSeleccionadas.length > 0">
+            <button id="prueba1" mat-raised-button [disabled]="camposDesabilitado" (click)="buscarPorCriterios()" >Buscar</button>
+          </div>
+        </mat-card>
       </div>
-    </mat-card>
-  </div>
-</div>
-<div *ngIf="consulta">
-  <app-documentos [consulta]="consulta" (onCargado)="habilitarCampos()"></app-documentos>
-</div>
+    </div>
+    <div *ngIf="consulta">
+      <app-documentos [consulta]="consulta" (onCargado)="habilitarCampos()"></app-documentos>
+    </div>
+  </mat-tab>
+  <mat-tab label="Polizas">
+    <iframe class="iframe-poliza" src=" http://10.1.2.128:2046/PolizaElectronicaWS/page/home.xhtml?usuario=14297337">
+    </iframe>
+  </mat-tab>
+</mat-tab-group>
